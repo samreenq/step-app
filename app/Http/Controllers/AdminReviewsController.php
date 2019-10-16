@@ -30,7 +30,7 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Review By","name"=>"review_by","join"=>"cms_users,name"];
+			$this->col[] = ["label"=>"Review By","name"=>"review_by","join"=>"app_users,first_name"];
 			$this->col[] = ["label"=>"Lesson","name"=>"lesson_id","join"=>"lessons,title"];
 			$this->col[] = ["label"=>"Rating","name"=>"rating"];
 			$this->col[] = ["label"=>"Created At","name"=>"created_at","callback_php"=>'($row->created_at != "" ? date("jS M Y h:i A",strtotime($row->created_at)) : "")'];

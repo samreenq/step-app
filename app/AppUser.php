@@ -3,8 +3,10 @@
 namespace App;
 
 use App\Libraries\RocketChat;
+use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Illuminate\Database\Eloquent\Model;
 use App\Libraries\Authy;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,10 +63,10 @@ class AppUser extends Model
 
     public function checkPassword($user_id, $old_password)
     {
-        $user_data = DB::table('app_users')
+        $user_data = \DB::table('app_users')
             ->select('app_users.password')
             ->where('app_users.id', $user_id)->first();
-        if (\Hash::check($old_password, $user_data->password))
+        if (Hash::check($old_password, $user_data->password))
             return 1;
         else
             return 0;

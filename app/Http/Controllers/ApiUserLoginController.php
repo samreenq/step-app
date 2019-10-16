@@ -17,7 +17,7 @@
 		
 
 		    public function hook_before(&$postdata) {
-				$response=$this->user_model->authenticateUser($postdata);
+				$response = $this->user_model->authenticateUser($postdata);
                 if($response['api_status']){
                     $this->output(makeClientHappy($response['data']));
                 }

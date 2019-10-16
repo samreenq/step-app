@@ -16,4 +16,8 @@ class Quiz extends Model
         $response = $this->create($storeQuiz->only($this->getFillable()));
         return $response->id;
     }
+
+    public function options(){
+        return $this->hasMany('App\Option','quiz_id','id');
+    }
 }
