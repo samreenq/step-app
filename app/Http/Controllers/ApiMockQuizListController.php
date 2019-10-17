@@ -1,24 +1,24 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Lesson;
+		use App\MockQuiz;
         use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
 
-		class ApiGetCourseLessonController extends \crocodicstudio\crudbooster\controllers\ApiController {
+		class ApiMockQuizListController extends \crocodicstudio\crudbooster\controllers\ApiController {
 
 		    function __construct() {    
-				$this->table       = "lessons";        
-				$this->permalink   = "get_course_lesson";    
+				$this->table       = "mock_quizzes";        
+				$this->permalink   = "mock_quiz_list";    
 				$this->method_type = "get";
-				$this->lesson_model = new Lesson();
+				$this->p_model = new MockQuiz();
 		    }
 		
 
 		    public function hook_before(&$postdata) {
-		        $response = $this->lesson_model->with(['reviews'])->where('course_id',$postdata['course_id'])->get();
-		        $this->output(makeClientHappy($response));
+                $response = $this->p_model->with(['options'])->get();
+                $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 
 		    }

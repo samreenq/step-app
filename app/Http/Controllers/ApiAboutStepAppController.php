@@ -1,24 +1,24 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Lesson;
+		use App\Setting;
         use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
 
-		class ApiGetCourseLessonController extends \crocodicstudio\crudbooster\controllers\ApiController {
+		class ApiAboutStepAppController extends \crocodicstudio\crudbooster\controllers\ApiController {
 
 		    function __construct() {    
-				$this->table       = "lessons";        
-				$this->permalink   = "get_course_lesson";    
+				$this->table       = "cms_settings";        
+				$this->permalink   = "about_step_app";    
 				$this->method_type = "get";
-				$this->lesson_model = new Lesson();
+
 		    }
 		
 
 		    public function hook_before(&$postdata) {
-		        $response = $this->lesson_model->with(['reviews'])->where('course_id',$postdata['course_id'])->get();
-		        $this->output(makeClientHappy($response));
+                $response = Setting::where('name','about_step_app')->first()->content;
+                $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 
 		    }

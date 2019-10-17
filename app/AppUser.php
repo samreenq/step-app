@@ -56,6 +56,34 @@ class AppUser extends Model
         return ['api_status' => $status, 'data' => $data];
     }
 
+    final function changePassword($postdata)
+    {
+        $user_data = $this->where('id', $postdata['user_id'])->first();
+        $status = 0;
+
+        if (!$user_data->is_active) {
+            $username = $user_data->first_name . ' ' . $user_data->last_name;
+            $email_data = ['to' => $user_data->email, 'data' => ['username' => $username],
+                'template' => 'user_registration'];
+            CRUDBooster::sendEmail($email_data);
+            $data = 'Inactive User. Please Enter the Activation Code to Continue';
+
+        } else if (!\Hash::check($postdata['password'], $user_data->password)) {
+            $data = 'Invalid Password';
+        } else {
+            unset($user_data->password);
+            $status = 1;
+            $device_token = isset($postdata['device_token']) ? $postdata['device_token'] : 'no_token';
+            $user_data->device_token = $device_token;
+            $user_data->save();
+            $this->setAccessToken($user_data->id);
+
+            $data = $this->with('token')->find($user_data->id);
+        }
+
+        return ['api_status' => $status, 'data' => $data];
+    }
+
     public function token()
     {
         return $this->hasOne('App\AccessToken', 'user_id');

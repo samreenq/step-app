@@ -16,4 +16,12 @@ class MockQuiz extends Model
         $response = $this->create($storeQuiz->only($this->getFillable()));
         dd($response->id);
     }
+
+    /**
+     * Options
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function options(){
+        return $this->hasMany('App\MockQuizOption','mock_quiz_id','id');
+    }
 }
