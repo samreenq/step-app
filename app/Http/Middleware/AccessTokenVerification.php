@@ -67,7 +67,8 @@ class AccessTokenVerification
             'api/user_login',
             'api/check_third_party_user_exists',
             'api/forgot_password',
-            'api/get_page'
+            'api/get_page',
+            'api/user_login_social'
         ];
 
         return in_array($route ,$whiteListRoutes);

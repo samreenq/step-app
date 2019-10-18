@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Quiz;
+		use App\Lesson;
+        use App\Quiz;
+        use App\QuizResult;
         use App\Setting;
         use Session;
 		use Request;
@@ -17,6 +19,8 @@
 		
 
 		    public function hook_before(&$postdata) {
+		        //delete if already exists
+                QuizResult::where('lesson_id',$postdata['lesson_id'])->where('user_id',$postdata['user_id'])->delete();
 		        $count_wrong = substr_count($postdata['is_correct'],0);
 		        $count_correct = substr_count($postdata['is_correct'],1);
 		        $count_questions = Quiz::where('lesson_id',$postdata['lesson_id'])->count();
@@ -30,7 +34,9 @@
                 $postdata['attempted'] = $count_wrong + $count_correct;
                 $postdata['score'] = $score . "%";
                 $postdata['status'] = $score >= $passing_score ? "Pass" : "Fail";
+                $postdata['course_id'] = Lesson::where('id',$postdata['lesson_id'])->first()->course_id;
                 unset($postdata['is_correct']);
+
                 //This method will be execute before run the main process
 
 		    }

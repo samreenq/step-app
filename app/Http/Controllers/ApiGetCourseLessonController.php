@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 		use App\Lesson;
+        use Illuminate\Support\Facades\Storage;
         use Session;
 		use Request;
 		use DB;
@@ -17,7 +18,11 @@
 		
 
 		    public function hook_before(&$postdata) {
-		        $response = $this->lesson_model->with(['reviews'])->where('course_id',$postdata['course_id'])->get();
+		        $response = $this->lesson_model
+                    ->with(['reviews','result'])
+                    ->where('course_id',$postdata['course_id'])
+                    ->whereNull('deleted_at')
+                    ->get();
 		        $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 

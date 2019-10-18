@@ -41,21 +41,23 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
-			$this->form[] = ['name'=>'created_by','type'=>'hidden','value'=>CRUDBooster::myId()];
 			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
 			$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
-            $this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-            # END FORM DO NOT REMOVE THIS LINE
+			$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			$this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Identifier','name'=>'identifier','type'=>'select2','validation'=>'required','width'=>'col-sm-9','dataenum'=>'listening; reading; grammar; writing;'];
+			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Course Id','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-10','datatable'=>'course,id'];
-			//$this->form[] = ['label'=>'Created By','name'=>'created_by','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
+			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
+			//$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
 			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			//$this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'filemanager','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Identifier','name'=>'identifier','type'=>'select2','validation'=>'required','width'=>'col-sm-9','dataenum'=>'listening; reading; grammar; writing;'];
 			# OLD END FORM
 
 			/* 
@@ -267,7 +269,9 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
+	    public function hook_before_add(&$postdata) {
+	        $postdata['created_by'] = CRUDBooster::myId();
+
 	        //Your code here
 
 	    }
