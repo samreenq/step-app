@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-		use Session;
+		use App\Review;
+        use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
@@ -15,8 +16,24 @@
 		
 
 		    public function hook_before(&$postdata) {
-                $postdata['review_by'] = $postdata['user_id'];
-                $postdata = filterPostRequest($postdata,$this->table);
+		        //if exists update
+                $check = Review::where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
+
+                if ($check) {
+                    $response = Review::where('review_by', $postdata['user_id'])
+                        ->update([
+                        'rating' => $postdata['rating'],
+                        'review' => $postdata['review'],
+                        'review_by' => $postdata['user_id']
+                    ]);
+                    if($response) {
+                        $this->output(makeClientHappy($response));
+                    }
+                }
+                else {
+                    $postdata['review_by'] = $postdata['user_id'];
+                    $postdata = filterPostRequest($postdata, $this->table);
+                }
 		        //This method will be execute before run the main process
 
 		    }
