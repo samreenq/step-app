@@ -17,7 +17,7 @@
 		
 
 		    public function hook_before(&$postdata) {
-				$user_data = $this->user_model->where(['platform_id'=> $postdata['platform_id'],'is_active'=> '1'])->first();
+				$user_data = $this->user_model->where(['platform_id'=> $postdata['platform_id'],'is_active'=> '1'])->with('token')->first();
 
 				if($user_data) {
 					$this->output(makeClientHappy($user_data));
@@ -43,10 +43,33 @@
                     if ($user_data) {
                         $this->user_model->sendRegisterMail($user_data);
                     }
-                    
                     $result =  makeClientHappy($user_data);
                 }
 
 		    }
+
+            /**
+             * @param string $output
+             * @return \Illuminate\Http\JsonResponse
+             */
+            public function execute_api($output = 'API')
+            {
+                try{
+                    $result = parent::execute_api();
+                    //echo '<pre>'; print_r($result->original); exit;
+                    $api_response = isset($result->original) ? $result->original : [];
+                    $response = apiResponse($api_response);
+
+                    if($api_response['api_status'] == 1){
+                        return response()->json($response, 200);
+                    }
+                    return response()->json($response, 400);
+                }
+                catch (\Exception $e){
+                    $response['message'] = $e->getMessage();
+                    // $response['trace'] = $e->getTraceAsString();
+                    return response()->json($response,400);
+                }
+            }
 
 		}
