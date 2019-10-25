@@ -45,15 +45,15 @@ class AccessTokenVerification
     {
         switch ($type) {
             case 'access_token_required':
-                $error = ['msg' => 'X-Access-Token is required', 'status_code' => 500];
+                $error = ['api_message' => 'X-Access-Token is required', 'status_code' => 400];
                 break;
 
             case 'access_token_expired':
-                $error = ['msg' => 'Token has been expired', 'status_code' => 500];
+                $error = ['api_message' => 'Token has been expired', 'status_code' => 400];
                 break;
 
             default:
-                $error = ['msg' => 'Token mismatched', 'status_code' => 500];
+                $error = ['api_message' => 'Token mismatched', 'status_code' => 400];
                 break;
         }
 

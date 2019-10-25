@@ -80,7 +80,7 @@ function sendErrorToClient($msg, $data = false)
     if ($data !== false) {
         $result['data'] = $data;
     }
-    http_response_code(500);
+   // http_response_code(500);
     return $result;
 }
 
@@ -89,6 +89,10 @@ function makeClientHappy($data, $msg = 'success')
     $result = [];
     $result['api_status'] = 1;
     $result['api_message'] = $msg;
+
+    if(isset($data)){
+        $data = $data->toArray();
+    }
 
     $result['data'] = $data;
 
@@ -263,5 +267,28 @@ function get_nearest_timezone($cur_lat, $cur_long, $country_code = '') {
     }
     return 'unknown';
 }
+
+/**
+ * @param $response
+ * @return array
+ */
+function apiResponse($response)
+{
+   // dd($response);
+    $result = [];
+   // $result['status'] = isset($response['api_status']) ? $response['api_status'] : 0;
+
+    if($response['api_status'] == 1){
+        $result['message'] = isset($response['api_message']) ? $response['api_message'] : 'success';
+    }else{
+        $result['message'] = isset($response['api_message']) ? $response['api_message'] : 'No Response Found';
+    }
+       if(isset($response['data'])){
+           $result['data'] = $response['data'];
+       }
+
+    return $result;
+}
+
 ?>
     
