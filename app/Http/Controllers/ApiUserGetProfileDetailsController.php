@@ -32,4 +32,27 @@
 
 		    }
 
+            /**
+             * @param string $output
+             * @return \Illuminate\Http\JsonResponse
+             */
+            public function execute_api($output = 'API')
+            {
+                try{
+                    $result = parent::execute_api();
+                    $api_response = isset($result->original) ? $result->original : [];
+                    $response = apiResponse($api_response);
+
+                    if($api_response['api_status'] == 1){
+                        return response()->json($response, 200);
+                    }
+                    return response()->json($response, 400);
+                }
+                catch (\Exception $e){
+                    $response['message'] = $e->getMessage();
+                    // $response['trace'] = $e->getTraceAsString();
+                    return response()->json($response,400);
+                }
+            }
+
 		}
