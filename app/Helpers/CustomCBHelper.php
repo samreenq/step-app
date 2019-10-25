@@ -91,7 +91,8 @@ function makeClientHappy($data, $msg = 'success')
     $result['api_message'] = $msg;
 
     if(isset($data)){
-        $data = $data->toArray();
+       // $data = $data->toArray();
+        $data = is_object($data) ? $data->toArray(): $data;
     }
 
     $result['data'] = $data;

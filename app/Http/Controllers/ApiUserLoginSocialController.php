@@ -18,9 +18,25 @@
 
 		    public function hook_before(&$postdata) {
 				$user_data = $this->user_model->where(['platform_id'=> $postdata['platform_id'],'is_active'=> '1'])->with('token')->first();
-
+                //echo '<pre>'; print_r($user_data->id); exit;
 				if($user_data) {
-					$this->output(makeClientHappy($user_data));
+
+                    if(isset($postdata['email'])) {
+                        $model = $this->user_model->where('id','!=',$user_data->id)->where(['email'=> $postdata['email'],'is_active'=> '1']);
+                       // $user_data = $model->count();
+                       // dd($model->count());
+                        if($model->count() > 0) {
+                            $this->output(sendErrorToClient('Email address already in use.'));
+                        }
+                        else{
+                            //Update user other information
+                           $this->user_model->find($user_data->id)->update($postdata);
+                           // $user_data['id'] = $user_data->id;
+                            $user_data =  $this->user_model->with('token')->find($user_data->id);
+                            $this->output(makeClientHappy($user_data));
+                        }
+                    }
+
 				}
 				else if(isset($postdata['email'])) {
 					$user_data = $this->user_model->where(['email'=> $postdata['email'],'is_active'=> '1'])->count();
