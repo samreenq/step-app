@@ -23,3 +23,4 @@ Route::post('/admin/quiz-store', 'AdminQuestionController@store')->name('quiz.st
 
 Route::post('/admin/mock-quiz-store', 'AdminQuestionController@storeMock')->name('mock-quiz.store');
 Route::any('/reset-password/token/{token}', 'WebController@resetPassword');
+Route::any('/activate/token/{token}', 'WebController@activateAccount');

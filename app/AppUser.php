@@ -19,7 +19,7 @@ class AppUser extends Model
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 'password', 'photo', 'device_token', 'platform_type', 'platform_id', 'image_url',
-        'reset_token', 'is_paid', 'is_active'
+        'reset_token', 'is_paid', 'is_active','verification_token'
     ];
 
     protected $hidden = [
@@ -38,15 +38,16 @@ class AppUser extends Model
     {
         $user_data = $this->where('email', $postdata['email'])->first();
         $status = 0;
-
+       // dd($user_data);
         if (!$user_data) {
             $data = 'Invalid Email Address';
         } else if (!$user_data->is_active) {
-            $username = $user_data->first_name . ' ' . $user_data->last_name;
+           /* $username = $user_data->first_name . ' ' . $user_data->last_name;
             $email_data = ['to' => $user_data->email, 'data' => ['username' => $username],
                 'template' => 'user_registration'];
-            CRUDBooster::sendEmail($email_data);
-            $data = 'Inactive User. Please Enter the Activation Code to Continue';
+            CRUDBooster::sendEmail($email_data);*/
+           // $data = 'Inactive User. Please Enter the Activation Code to Continue';
+            $data = 'Inactive User. Please check email to activate your account';
 
         } else if (!\Hash::check($postdata['password'], $user_data->password)) {
             $data = 'Invalid Password';
@@ -133,10 +134,20 @@ class AppUser extends Model
 
     public function sendRegisterMail($user)
     {
+        $app_name = CRUDBooster::getSetting('appname');
+
+        $activate_url = url('/').'/activate/token/'.$user->verification_token;
+
         $username = $user->first_name.' '.$user->last_name;
-        $email_data = ['to' => $user->email, 'data' => ['username' => $username], 'template' => 'user_registration'];
-       // \CRUDBooster::sendEmail($email_data);
-        
+        $email_data = ['to' => $user->email, 'data' => ['USER_NAME' => $username,
+            'APP_NAME'=>$app_name,
+            'ACTIVATE_URL'=>$activate_url],
+            'DOWNLOAD_APP_URL'=>$activate_url,
+            'template' => 'user_registration'];
+      // echo '<pre>'; print_r($email_data); exit;
+         \CRUDBooster::sendEmail($email_data);
+
+
     }
 
 
