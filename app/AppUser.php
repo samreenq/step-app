@@ -26,6 +26,14 @@ class AppUser extends Model
         'password'
     ];
 
+    public function __construct()
+    {
+        // set tables and keys
+        $this->__table = $this->table = 'app_users';
+        $this->primaryKey =  'id';
+    }
+
+
     final function authenticateUser($postdata)
     {
         $user_data = $this->where('email', $postdata['email'])->first();
@@ -45,7 +53,7 @@ class AppUser extends Model
         } else {
             unset($user_data->password);
             $status = 1;
-            $device_token = isset($postdata['device_token']) ? $postdata['device_token'] : 'no_token';
+            $device_token = isset($postdata['device_token']) ? $postdata['device_token'] : '';
             $user_data->device_token = $device_token;
             $user_data->save();
             $this->setAccessToken($user_data->id);
@@ -115,7 +123,9 @@ class AppUser extends Model
 
     public function sendResetPassMail($user)
     {
-        $emailData = ['to' => $user->email, 'data' => ['reset_token' => $user->reset_token], 'template' => 'forgot_password_app'];
+        $reset_link = url('/').'/reset-password/token/'.$user->reset_token;
+        $emailData = ['to' => $user->email, 'data' => ['reset_link' => $reset_link], 'template' => 'forgot_password_app'];
+       // echo '<pre>'; print_r($emailData); exit;
         \CRUDBooster::sendEmail($emailData);
 
         return 'Email has been sent to your email address with reset token.';
@@ -125,7 +135,7 @@ class AppUser extends Model
     {
         $username = $user->first_name.' '.$user->last_name;
         $email_data = ['to' => $user->email, 'data' => ['username' => $username], 'template' => 'user_registration'];
-        \CRUDBooster::sendEmail($email_data);
+       // \CRUDBooster::sendEmail($email_data);
         
     }
 

@@ -22,3 +22,4 @@ Route::get("/admin/quiz-add", function(){
 Route::post('/admin/quiz-store', 'AdminQuestionController@store')->name('quiz.store');
 
 Route::post('/admin/mock-quiz-store', 'AdminQuestionController@storeMock')->name('mock-quiz.store');
+Route::any('/reset-password/token/{token}', 'WebController@resetPassword');
