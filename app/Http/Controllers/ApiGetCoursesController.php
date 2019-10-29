@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-		use Session;
+		use App\Course;
+        use App\Review;
+        use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
@@ -16,7 +18,6 @@
 
 		    public function hook_before(&$postdata) {
 		        //This method will be execute before run the main process
-
 		    }
 
 		    public function hook_query(&$query) {
@@ -26,7 +27,8 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
-
+                $courses = new Course();
+                $result['data'] = $courses->all();
 		    }
 
             /**
