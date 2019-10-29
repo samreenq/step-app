@@ -13,18 +13,18 @@
 			$this->title_field = "title";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
-            $this->global_privilege = false;
-            $this->button_table_action = true;
-            $this->button_bulk_action = true;
-            $this->button_action_style = "button_icon";
-            $this->button_add = false;
-            $this->button_edit = true;
-            $this->button_delete = true;
-            $this->button_detail = false;
-            $this->button_show = false;
-            $this->button_filter = true;
-            $this->button_import = false;
-            $this->button_export = true;
+			$this->global_privilege = false;
+			$this->button_table_action = true;
+			$this->button_bulk_action = true;
+			$this->button_action_style = "button_icon";
+			$this->button_add = true;
+			$this->button_edit = true;
+			$this->button_delete = true;
+			$this->button_detail = false;
+			$this->button_show = false;
+			$this->button_filter = true;
+			$this->button_import = false;
+			$this->button_export = true;
 			$this->table = "content_pages";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -39,15 +39,14 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title Here'];
-			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:3|max:3000','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:3','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Type','name'=>'type','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'Please Enter Title Here'];
-			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'Please Enter Title Here'];
+			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title Here'];
+			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:3|max:3000','width'=>'col-sm-9'];
 			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
 			# OLD END FORM
 
@@ -258,7 +257,7 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
+            $postdata['type'] = str_slug($postdata['title']);
 	    }
 
 	    /* 
@@ -283,7 +282,7 @@
 	    */
 	    public function hook_before_edit(&$postdata,$id) {        
 	        //Your code here
-
+            $postdata['type'] = str_slug($postdata['title']);
 	    }
 
 	    /* 
