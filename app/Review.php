@@ -24,4 +24,14 @@ class Review extends Model
        $data = $this->select(DB::raw("SUM(rating)/COUNT(id) as avg_rating"))->where('course_id', $course_id)->first();
        return (isset($data->avg_rating) && !empty($data->avg_rating)) ?  round($data->avg_rating,1) : 0;
     }
+
+    /**
+     * @param $course_id
+     * @return string
+     */
+    public function getRatingByLesson($lesson_id)
+    {
+        $data = $this->select(DB::raw("SUM(rating)/COUNT(id) as avg_rating"))->where('lesson_id', $lesson_id)->first();
+        return (isset($data->avg_rating) && !empty($data->avg_rating)) ?  round($data->avg_rating,1) : 0;
+    }
 }

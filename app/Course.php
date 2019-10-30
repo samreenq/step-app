@@ -20,7 +20,8 @@ class Course extends Model
     {
 
         $reviews_model = new Review();
-        return $reviews_model->getRatingByCourse($this->id);
+        $rating =  $reviews_model->getRatingByCourse($this->id);
+        return (string)$rating;
     }
 
     public function getIconPathAttribute()
@@ -34,9 +35,8 @@ class Course extends Model
      */
     public function getTotalLessonAttribute()
     {
-
         $model = new Lesson();
-       return $model->where('course_id',$this->id)
+        return $model->where('course_id',$this->id)
            ->where('is_active',1)
            ->whereNull('deleted_at')->count();
     }

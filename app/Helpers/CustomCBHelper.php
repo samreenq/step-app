@@ -94,10 +94,7 @@ function makeClientHappy($data, $msg = 'success')
        // $data = $data->toArray();
         $data = is_object($data) ? $data->toArray(): $data;
     }
-
     $result['data'] = $data;
-
-
     return $result;
 }
 
@@ -124,7 +121,7 @@ function getNowDate()
 
 function makeClientHappyWithPagination($data, $msg = 'success')
 {
-    $data = $data->toArray();
+    $data = is_object($data) ? $data->toArray(): $data;
     $result = [];
     $result['api_status'] = 1;
     $result['api_message'] = $msg;
@@ -288,6 +285,30 @@ function apiResponse($response)
            $result['data'] = $response['data'];
        }
 
+    if(isset($response['page'])){
+        $result['page'] = $response['page'];
+    }
+
+    return $result;
+}
+
+/**
+ * @param $data
+ * @param string $msg
+ * @return array
+ */
+function listPagination($data, $msg = 'success')
+{
+    $arr = $data = is_object($data) ? $data->toArray(): $data;
+    $result = [];
+    $result['api_status'] = 1;
+    $result['api_message'] = $msg;
+    $result['data'] = (isset($data['data'])) ? $data['data'] : $data;
+    // $result['data'] = $data['data'];
+    unset($data['data']);
+    if(isset($arr['data'])){
+        $result['page'] = $data;
+    }
     return $result;
 }
 
