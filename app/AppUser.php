@@ -26,11 +26,23 @@ class AppUser extends Model
         'password'
     ];
 
+    protected $appends = [
+        'photo_path',
+    ];
+
     public function __construct()
     {
         // set tables and keys
         $this->__table = $this->table = 'app_users';
         $this->primaryKey =  'id';
+    }
+
+    public function getPhotoPathAttribute()
+    {
+        if(!empty($this->photo))
+            return url('/').'/'.$this->photo;
+        else
+            return '';
     }
 
 
