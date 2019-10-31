@@ -23,13 +23,13 @@
                 $count_questions = MockQuiz::where('id', '>' , 0)->count();
                 $passing_score = Setting::where('name','mock_passing_score')->first()->content;
                 $marks_per_question = Setting::where('name','mock_marks_per_question')->first()->content;
-                $score = number_format((float)( ($count_correct * $marks_per_question) / $passing_score * 100), 2, '.', '');
+                $score = (($count_correct * $marks_per_question) / $passing_score) * 100;
                 //set data
                 $postdata['total_questions'] = $count_questions;
                 $postdata['correct'] = $count_correct;
                 $postdata['wrong'] = $count_wrong;
                 $postdata['attempted'] = $count_wrong + $count_correct;
-                $postdata['score'] = $score . "%";
+                $postdata['score'] = $score;
                 $postdata['status'] = $score >= $passing_score ? "Pass" : "Fail";
                 unset($postdata['is_correct']);
 		        //This method will be execute before run the main process

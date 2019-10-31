@@ -30,15 +30,15 @@ class AdminQuizzesController extends \crocodicstudio\crudbooster\controllers\CBC
         $this->table = "quizzes";
         # END CONFIGURATION DO NOT REMOVE THIS LINE
 
-        # START COLUMNS DO NOT REMOVE THIS LINE
-        $this->col = [];
-        $this->col[] = ["label" => "Question", "name" => "question"];
-        $this->col[] = ["label" => "Is Active", "name" => "is_active", "callback_php" => '$row->is_active ? "Yes" : "No"'];
-        $this->col[] = ["label" => "Created At", "name" => "created_at", "callback_php" => '($row->created_at != "" ? date("jS M Y h:i A",strtotime($row->created_at)) : "")'];
-        $this->col[] = ["label" => "Updated At", "name" => "updated_at", "callback_php" => '($row->updated_at != "" ? date("jS M Y h:i A",strtotime($row->updated_at)) : "")'];
-        # END COLUMNS DO NOT REMOVE THIS LINE
+			# START COLUMNS DO NOT REMOVE THIS LINE
+			$this->col = [];
+			$this->col[] = ["label"=>"Question","name"=>"question"];
+			$this->col[] = ["label"=>"Is Active","name"=>"is_active","callback_php"=>'$row->is_active ? "Yes" : "No"'];
+			$this->col[] = ["label"=>"Created At","name"=>"created_at","callback_php"=>'($row->created_at != "" ? date("jS M Y h:i A",strtotime($row->created_at)) : "")'];
+			$this->col[] = ["label"=>"Updated At","name"=>"updated_at","callback_php"=>'($row->updated_at != "" ? date("jS M Y h:i A",strtotime($row->updated_at)) : "")'];
+			# END COLUMNS DO NOT REMOVE THIS LINE
 
-        # START FORM DO NOT REMOVE THIS LINE
+			# START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['name' => 'lesson_id', 'type' => 'hidden'];
         $this->form[] = ['label' => 'Question', 'name' => 'question', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-9'];
@@ -118,6 +118,7 @@ class AdminQuizzesController extends \crocodicstudio\crudbooster\controllers\CBC
         */
         $this->index_button = array();
         $this->index_button[] = ['label' => 'Add Question', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
+        $this->index_button[] = ['label' => 'Quiz Summary', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
 
 
         /*
@@ -152,7 +153,7 @@ class AdminQuizzesController extends \crocodicstudio\crudbooster\controllers\CBC
         //$this->script_js = NULL;
 
 
-        $this->script_js = 'var form_url ="'.url("/admin/quiz-store").'"; var reload=0;';
+        $this->script_js = 'var form_url ="'.url("/admin/quiz-store").'"; var reload=0; var form_summary_url ="'.url("/admin/quiz-summary-store").'";';
 
 
         /*
@@ -174,7 +175,7 @@ class AdminQuizzesController extends \crocodicstudio\crudbooster\controllers\CBC
         | $this->post_index_html = "<p>test</p>";
         |
         */
-        $this->post_index_html = '<div class="modal fade" id="addModal"></div>';
+        $this->post_index_html = '<div class="modal fade" id="addModal"></div><div class="modal fade" id="addUpdateModal"></div>';
 
 
         /*

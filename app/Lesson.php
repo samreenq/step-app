@@ -21,6 +21,11 @@ class Lesson extends Model
         return $this->hasOne('App\QuizResult','lesson_id','id');
     }
 
+    public function summary()
+    {
+        return $this->hasOne('App\QuizSummary','lesson_id','lesson_id');
+    }
+
     /**
      * @return string
      */

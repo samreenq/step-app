@@ -26,13 +26,13 @@
 		        $count_questions = Quiz::where('lesson_id',$postdata['lesson_id'])->count();
 		        $passing_score = Setting::where('name','passing_score')->first()->content;
 		        $marks_per_question = Setting::where('name','marks_per_question')->first()->content;
-		        $score = number_format((float)( ($count_correct * $marks_per_question) / $passing_score * 100), 2, '.', '');
+		        $score = (($count_correct * $marks_per_question) / $passing_score) * 100;
 		        //set data
                 $postdata['total_questions'] = $count_questions;
                 $postdata['correct'] = $count_correct;
                 $postdata['wrong'] = $count_wrong;
                 $postdata['attempted'] = $count_wrong + $count_correct;
-                $postdata['score'] = $score . "%";
+                $postdata['score'] = $score;
                 $postdata['status'] = $score >= $passing_score ? "Pass" : "Fail";
                 $postdata['course_id'] = Lesson::where('id',$postdata['lesson_id'])->first()->course_id;
                 unset($postdata['is_correct']);
