@@ -23,9 +23,10 @@
 		        //echo '<pre>';  print_r($postdata['user_id']); exit;
                 $user_id = $postdata['user_id'];
 		        $response = $this->lesson_model
+                    ->leftJoin('courses','courses.id','=',$this->table.'.course_id')
                    // ->with(['reviews','result'])
-                    ->where('course_id',$postdata['course_id'])
-                    ->whereNull('deleted_at')
+                    ->where('courses.type',$postdata['type'])
+                    ->whereNull($this->table.'.deleted_at')
                     ->paginate(10);
 		       // echo '<pre>'; print_r($response);
 
@@ -33,7 +34,6 @@
 
                     $data = makeClientHappyWithPagination($response);
                    //
-		          //  $data = $response->toArray();
 		            $quiz_model = new QuizResult();
 
 		            foreach($data['data'] as $key => $row){

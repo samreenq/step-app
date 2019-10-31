@@ -262,7 +262,7 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
+            $postdata['type'] = str_slug($postdata['title']);
 	    }
 
 	    /* 
@@ -287,7 +287,7 @@
 	    */
 	    public function hook_before_edit(&$postdata,$id) {        
 	        //Your code here
-
+            $postdata['type'] = str_slug($postdata['title']);
 	    }
 
 	    /* 

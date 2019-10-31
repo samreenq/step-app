@@ -46,7 +46,7 @@
 			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
 			$this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];
-			$this->form[] = ['label'=>'Identifier','name'=>'identifier','type'=>'select2','validation'=>'required','width'=>'col-sm-9','dataenum'=>'listening; reading; grammar; writing;'];
+			//$this->form[] = ['label'=>'Identifier','name'=>'identifier','type'=>'select2','validation'=>'required','width'=>'col-sm-9','dataenum'=>'listening; reading; grammar; writing;'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
