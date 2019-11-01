@@ -140,8 +140,8 @@ class AppUser extends Model
         $emailData = ['to' => $user->email, 'data' => ['reset_link' => $reset_link], 'template' => 'forgot_password_app'];
        // echo '<pre>'; print_r($emailData); exit;
         \CRUDBooster::sendEmail($emailData);
-
-        return 'Email has been sent to your email address with reset token.';
+        return true;
+       // return 'Email has been sent to your email address with reset token.';
     }
 
     public function sendRegisterMail($user)

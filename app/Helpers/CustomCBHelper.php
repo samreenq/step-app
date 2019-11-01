@@ -84,7 +84,7 @@ function sendErrorToClient($msg, $data = false)
     return $result;
 }
 
-function makeClientHappy($data, $msg = 'success')
+function makeClientHappy($data, $msg = 'success',$display_message_only = false)
 {
     $result = [];
     $result['api_status'] = 1;
@@ -94,7 +94,10 @@ function makeClientHappy($data, $msg = 'success')
        // $data = $data->toArray();
         $data = is_object($data) ? $data->toArray(): $data;
     }
-    $result['data'] = $data;
+    if(!$display_message_only){
+        $result['data'] = $data;
+    }
+
     return $result;
 }
 

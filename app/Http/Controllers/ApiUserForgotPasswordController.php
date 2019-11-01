@@ -27,7 +27,7 @@
                     $user_data->save();
 
                     $response = $this->user_model->sendResetPassMail($user_data);
-                    $this->output(makeClientHappy($response));
+                    $this->output(makeClientHappy($response,'Reset link is sent to your email address',true));
                     
 				}
 
