@@ -66,7 +66,7 @@ class AccessTokenVerification
             'api/user_register',
             'api/user_login',
             'api/check_third_party_user_exists',
-            'api/forgot_password',
+            'api/user_forgot_password',
             'api/get_page',
             'api/user_login_social'
         ];
