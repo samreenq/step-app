@@ -30,12 +30,12 @@ class AppUser extends Model
         'photo_path',
     ];
 
-    public function __construct()
+    /*public function __construct()
     {
         // set tables and keys
-        $this->__table = $this->table = 'app_users';
+        //$this->__table = $this->table = 'app_users';
         $this->primaryKey =  'id';
-    }
+    }*/
 
     public function getPhotoPathAttribute()
     {

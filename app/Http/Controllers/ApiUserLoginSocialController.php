@@ -20,78 +20,52 @@
 
                 $user_data = $this->user_model->where(['platform_id'=> $postdata['platform_id']])->with('token')->first();
 
-                if($user_data->is_active == 1){
+                if($user_data->is_active == 1){ //if user is created and active
+
+                  //  dd($user_data->toArray());
 
                     if(isset($postdata['email'])) {
                         $model = $this->user_model->where('id','!=',$user_data->id)->where(['email'=> $postdata['email'],'is_active'=> '1']);
                         // $user_data = $model->count();
-                        // dd($model->count());
+
                         if($model->count() > 0) {
                             $this->output(sendErrorToClient('Email address already in use.'));
                         }
                         else{
                             //Update user other information
                             $this->user_model->find($user_data->id)->update($postdata);
-                            // $user_data['id'] = $user_data->id;
+                            $this->user_model->setAccessToken($user_data->id);
                             $user_data =  $this->user_model->with('token')->find($user_data->id);
                             $this->output(makeClientHappy($user_data));
                         }
                     }
 
                 }
-                if(isset($user_data) && $user_data->is_active == 0){
+                else if($user_data->is_active == 0){ //if user is login first time or login as inactive
 
-                   // echo '<pre>'; print_r($user_data); exit;
-                    dd($postdata);
+                    $user = false;
                     if(isset($postdata['email'])) {
                         $user = $this->user_model->where('id', '!=', $user_data->id)->where(['email' => $postdata['email']])->count();
-                        if ($user) {
-                            $this->output(sendErrorToClient('Email address already in use.'));
-                        }else{
+                    }
 
-                            $this->output(makeClientHappy($user_data));
-                        }
+                    if(isset($postdata['email']) && $user){
+                        $this->output(sendErrorToClient('Email address already in use.'));
                     }
                     else{
+
+                        if(isset($user_data)){
+                            $this->user_model->find($user_data->id)->update($postdata);
+                        }else{
+                            $postdata = filterPostRequest($postdata, $this->table);
+                            $user_data = $this->user_model->create($postdata);
+                        }
+
+                        $this->user_model->setAccessToken($user_data->id);
+                        $user_data = $this->user_model->with('token')->find($user_data->id);
                         $this->output(makeClientHappy($user_data));
                     }
 
-                }else{
-
-                    $user_data = $this->user_model->create($postdata);
-                    $this->setAccessToken($user_data->id);
-                    $this->output(makeClientHappy($user_data));
                 }
-
-               // echo '<pre>'; print_r($user_data); exit;
-
-				/*$user_data = $this->user_model->where(['platform_id'=> $postdata['platform_id'],'is_active'=> '1'])->with('token')->first();
-
-				if($user_data) {
-
-                    if(isset($postdata['email'])) {
-                        $model = $this->user_model->where('id','!=',$user_data->id)->where(['email'=> $postdata['email'],'is_active'=> '1']);
-                       // $user_data = $model->count();
-                       // dd($model->count());
-                        if($model->count() > 0) {
-                            $this->output(sendErrorToClient('Email address already in use.'));
-                        }
-                        else{
-                            //Update user other information
-                           $this->user_model->find($user_data->id)->update($postdata);
-                           // $user_data['id'] = $user_data->id;
-                            $user_data =  $this->user_model->with('token')->find($user_data->id);
-                            $this->output(makeClientHappy($user_data));
-                        }
-                    }
-
-				}
-				else if(isset($postdata['email'])) {
-					$user_data = $this->user_model->where(['email'=> "'".$postdata['email']."'",'is_active'=> '1'])->count();
-					if($user_data) {
-						$this->output(sendErrorToClient('Email address already in use.'));
-					}
-				}*/
 		    }
 
 		    public function hook_query(&$query) {
@@ -100,7 +74,7 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
-                if($result['api_status']) {
+               /* if($result['api_status']) {
                     $this->user_model->setAccessToken($result['id']);
                     $user_data = $this->user_model->with('token')->find($result['id']);
 
@@ -110,7 +84,7 @@
                        // $this->user_model->sendRegisterMail($user_data);
                     }
                     $result =  makeClientHappy($user_data);
-                }
+                }*/
 
 		    }
 
