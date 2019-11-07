@@ -24,7 +24,7 @@
 
                   //  dd($user_data->toArray());
 
-                    if(isset($postdata['email'])) {
+                    if(isset($postdata['email']) && !empty($postdata['email'])) {
                         $model = $this->user_model->where('id','!=',$user_data->id)->where(['email'=> $postdata['email'],'is_active'=> '1']);
                         // $user_data = $model->count();
 
@@ -38,17 +38,23 @@
                             $user_data =  $this->user_model->with('token')->find($user_data->id);
                             $this->output(makeClientHappy($user_data));
                         }
+                    }else{
+                        //Update user other information
+                        $this->user_model->find($user_data->id)->update($postdata);
+                        $this->user_model->setAccessToken($user_data->id);
+                        $user_data =  $this->user_model->with('token')->find($user_data->id);
+                        $this->output(makeClientHappy($user_data));
                     }
 
                 }
                 else if($user_data->is_active == 0){ //if user is login first time or login as inactive
 
                     $user = false;
-                    if(isset($postdata['email'])) {
+                    if(isset($postdata['email']) && !empty($postdata['email'])) {
                         $user = $this->user_model->where('id', '!=', $user_data->id)->where(['email' => $postdata['email']])->count();
                     }
 
-                    if(isset($postdata['email']) && $user){
+                    if((isset($postdata['email']) && !empty($postdata['email'])) && $user){
                         $this->output(sendErrorToClient('Email address already in use.'));
                     }
                     else{

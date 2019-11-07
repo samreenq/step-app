@@ -22,7 +22,7 @@
 
                 $user_data->device_token = '';
                 $user_data->save();
-				$this->output(makeClientHappy([],'success'));
+				$this->output(makeClientHappy([],'success',true));
 
 		    }
 

@@ -14,7 +14,7 @@ class MockQuiz extends Model
     public function storeQuiz($storeQuiz)
     {
         $response = $this->create($storeQuiz->only($this->getFillable()));
-        dd($response->id);
+
     }
 
     /**
