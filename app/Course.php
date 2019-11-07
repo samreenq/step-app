@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Course extends Model
 {
@@ -26,8 +27,10 @@ class Course extends Model
 
     public function getIconPathAttribute()
     {
+        if(!empty($this->icon)){
+            return  Storage::url($this->icon);
+        }
 
-        return url('/').'/'.$this->icon;
     }
 
     /**
