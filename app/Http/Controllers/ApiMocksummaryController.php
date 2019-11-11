@@ -9,7 +9,7 @@
 		class ApiMocksummaryController extends \crocodicstudio\crudbooster\controllers\ApiController {
 
 		    function __construct() {    
-				$this->table       = "quiz_summary";
+				$this->table       = "mock_summary";
 				$this->permalink   = "mocksummary";    
 				$this->method_type = "get";    
 		    }

@@ -50,7 +50,7 @@
                     $postdata['wrong'] = $count_wrong;
                     $postdata['attempted'] = $count_wrong + $count_correct;
                     $postdata['score'] = $score;
-                    $postdata['status'] = $score >= $passing_score ? "Pass" : "Fail";
+                    $postdata['status'] = $score >= $passing_score ? "pass" : "fail";
                     unset($postdata['quiz']);
                     //This method will be execute before run the main process
                 }
