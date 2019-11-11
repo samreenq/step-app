@@ -7,6 +7,7 @@ use crocodicstudio\crudbooster\helpers\CRUDBooster;
 use Illuminate\Database\Eloquent\Model;
 use App\Libraries\Authy;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,8 +40,10 @@ class AppUser extends Model
 
     public function getPhotoPathAttribute()
     {
-        if(!empty($this->photo))
-            return url('/').'/'.$this->photo;
+        if(!empty($this->image_url))
+            return $this->image_url;
+        else if(!empty($this->photo))
+            return Storage::url($this->photo);
         else
             return '';
     }
