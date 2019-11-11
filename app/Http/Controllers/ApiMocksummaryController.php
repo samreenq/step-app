@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 		use App\MockSummary;
-        use App\QuizSummary;
         use Session;
 		use Request;
 		use DB;
@@ -17,7 +16,7 @@
 		
 
 		    public function hook_before(&$postdata) {
-		        $mock_summary_model = new QuizSummary();
+		        $mock_summary_model = new MockSummary();
 		        //This method will be execute before run the main process
                 $response = $mock_summary_model->first();
                 unset($response->lesson_id);
