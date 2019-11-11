@@ -42,7 +42,8 @@
                         $user_data->save();
                         $this->user_model->sendRegisterMail($user_data);
                     }
-                    $result =  makeClientHappy($user_data);
+                   // $result =  makeClientHappy($user_data);
+                    $this->output(sendErrorToClient('Please check email to activate your account'));
                 }
 		    }
 
