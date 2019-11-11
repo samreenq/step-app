@@ -38,6 +38,7 @@
                     $user_data = $this->user_model->with('token')->find($result['id']);
 
                     if ($user_data) {
+                        $user_data->is_active = 0;
                         $user_data->verification_token = $result['id'].time();
                         $user_data->save();
                         $this->user_model->sendRegisterMail($user_data);
