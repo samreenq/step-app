@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\AppUser;
 use App\Http\Controllers\Controller;
 use crocodicstudio\crudbooster\helpers\CRUDBooster;
+use Validator;
 use Illuminate\Http\Request;
 use View;
 
@@ -41,7 +42,7 @@ class WebController extends Controller {
 
                 if (isset($user)) {
                     $data['user'] = $user->toArray();
-                    // echo '<pre>'; print_r($data); exit;
+
                 } else {
                     $data['is_error'] = 1;
                     $data['error'] = 'Invalid request, user does not exist';
@@ -63,16 +64,31 @@ class WebController extends Controller {
      */
     private function _resetPassword(Request $request)
     {
-       // echo '<pre>'; print_r($request->all()); exit;
+
         $app_user = new AppUser();
         $user =  $app_user->where('reset_token',$request->reset_token)->first();
         if(isset($user)){
-            $data['user'] = $user->toArray();
+          //  echo '<pre>'; print_r($user); exit;
 
-            $user->password = \Hash::make($user['password']);
-            $user->reset_token = NULL;
-            $user->save();
-            $data['message'] = 'Password reset successfully';
+            // validations
+           $rules = array(
+                'new_password' => 'required|min:8|max:32',
+                'confirm_password' => "required|min:8|max:32|same:new_password",
+            );
+            $validator = Validator::make($request->all(), $rules);
+
+            // validate
+            if ($validator->fails()) {
+                $data['is_user_error'] = 1;
+                $data['error'] = $validator->errors()->first();
+            } else {
+                $data['user'] = $user->toArray();
+                $user->password = \Hash::make($request->new_password);
+                // $user->password = $request->new_password;
+                 $user->reset_token = NULL;
+                $user->save();
+                $data['message'] = 'Password reset successfully';
+            }
 
         }else{
             $data['is_user_error'] = 1;
@@ -97,7 +113,7 @@ class WebController extends Controller {
             if (isset($user)) {
 
                 $user->is_active = 1;
-                //$user->verification_token = NULL;
+                $user->verification_token = NULL;
                 $user->save();
                 $data['user'] = $user->toArray();
 

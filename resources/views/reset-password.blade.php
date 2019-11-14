@@ -46,7 +46,13 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
-                                        <input id="password" name="password" placeholder="New password" class="form-control"  type="password">
+                                        <input id="new_password" name="new_password" placeholder="New Password" required class="form-control"  type="password">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock color-blue"></i></span>
+                                        <input id="confirm_password" name="confirm_password" placeholder="Confirm Password" required class="form-control"  type="password">
                                     </div>
                                 </div>
                                 <div class="form-group">
