@@ -151,17 +151,18 @@ class AppUser extends Model
     {
         $app_name = CRUDBooster::getSetting('appname');
 
-        $activate_url = url('/').'/activate/token/'.$user->verification_token;
+       // $activate_url = url('/').'/activate/token/'.$user->verification_token;
+        $app_download_url = Setting::where('name', 'application_download_url')->first()->content;
 
         $username = $user->first_name.' '.$user->last_name;
         $email_data = ['to' => $user->email, 'data' => ['USER_NAME' => $username,
             'APP_NAME'=>$app_name,
-            'ACTIVATE_URL'=>$activate_url],
-            'DOWNLOAD_APP_URL'=>$activate_url,
+           // 'ACTIVATE_URL'=>$activate_url
+            'DOWNLOAD_APP_URL'=>$app_download_url,
+            ],
             'template' => 'user_registration'];
       // echo '<pre>'; print_r($email_data); exit;
          \CRUDBooster::sendEmail($email_data);
-
 
     }
 
