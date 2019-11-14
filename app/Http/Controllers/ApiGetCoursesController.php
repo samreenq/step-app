@@ -16,9 +16,10 @@
 		    }
 		
 
-		    public function hook_before(&$postdata) {
-		        //This method will be execute before run the main process
-		    }
+		    public function hook_before(&$postdata)
+            {
+                //This method will be execute before run the main process
+            }
 
 		    public function hook_query(&$query) {
 		        //This method is to customize the sql query
@@ -28,7 +29,7 @@
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
                 $courses = new Course();
-                $result['data'] = $courses->all();
+                $result['data'] = $courses->orderBy('sort_order')->get();
 		    }
 
             /**
