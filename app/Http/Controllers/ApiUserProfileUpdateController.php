@@ -13,10 +13,16 @@
 				$this->permalink   = "user_profile_update";    
 				$this->method_type = "post";
 				$this->user_model = new AppUser();
+                $this->_requestSocialLogin = false;
 		    }
 		
 
 		    public function hook_before(&$postdata) {
+
+                if(isset($postdata['social_login'])){
+                    if($postdata['social_login'] == 1)
+                        $this->_requestSocialLogin = true;
+                }
 				$postdata = removeEmptyKeys($postdata);
 				$postdata = filterPostRequest($postdata , $this->table);
 		    }
@@ -27,9 +33,13 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
-		        //dd($result);
 				if($result['api_status']) {
                     $user_data = $this->user_model->with('token')->find($postdata['id']);
+
+                    if( $this->_requestSocialLogin){
+                        $this->user_model->sendRegisterMail($user_data);
+                    }
+
 					$result =  makeClientHappy($user_data);
 				}
 
