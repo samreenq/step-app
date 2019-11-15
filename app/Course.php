@@ -9,21 +9,21 @@ class Course extends Model
 {
     //
     protected $appends = [
-        'avg_rating',
+       // 'avg_rating',
         'icon_path',
-        'total_lesson'
+        'total_topics'
     ];
 
     /**
      * @return string
      */
-    public function getAvgRatingAttribute()
+  /*  public function getAvgRatingAttribute()
     {
 
         $reviews_model = new Review();
         $rating =  $reviews_model->getRatingByCourse($this->id);
         return (string)$rating;
-    }
+    }*/
 
     public function getIconPathAttribute()
     {
@@ -36,9 +36,9 @@ class Course extends Model
     /**
      * @return mixed
      */
-    public function getTotalLessonAttribute()
+    public function getTotalTopicsAttribute()
     {
-        $model = new Lesson();
+        $model = new Topic();
         return $model->where('course_id',$this->id)
            ->where('is_active',1)
            ->whereNull('deleted_at')->count();

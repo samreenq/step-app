@@ -19,7 +19,7 @@
 		        $mock_summary_model = new MockSummary();
 		        //This method will be execute before run the main process
                 $response = $mock_summary_model->first();
-                unset($response->lesson_id);
+                unset($response->topic_id);
                 $this->output(makeClientHappy($response));
 		    }
 

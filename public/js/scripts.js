@@ -5,7 +5,7 @@ $("#add-question").click(function () {
 
 $("#quiz-summary").click(function () {
    // alert($("input[name=parent_id]").val());
-    $("#addUpdateModal").load("quiz-summary",{lesson_id:$("input[name=parent_id]").val()});
+    $("#addUpdateModal").load("quiz-summary",{topic_id:$("input[name=parent_id]").val()});
     $("#addUpdateModal").modal("show");
 });
 

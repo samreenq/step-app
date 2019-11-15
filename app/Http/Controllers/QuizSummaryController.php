@@ -30,7 +30,7 @@ class QuizSummaryController extends Controller
     public function getData(Request $request)
     {
       // $data =  $this->_model->get();
-       $data = $this->_model->where('lesson_id',$request->lesson_id)->first();
+       $data = $this->_model->where('topic_id',$request->topic_id)->first();
         $raw = ($data) ? $data->toArray() : [];
         return View::make("/quiz_summary",['data'=>$raw]);
     }

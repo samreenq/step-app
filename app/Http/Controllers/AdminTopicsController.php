@@ -5,7 +5,7 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminLessonsController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminTopicsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
@@ -21,42 +21,33 @@
 			$this->button_edit = true;
 			$this->button_delete = true;
 			$this->button_detail = true;
-			$this->button_show = false;
+			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = true;
-			$this->table = "lessons";
+			$this->button_export = false;
+			$this->table = "topics";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Topic","name"=>"topic_id","join"=>"topics,title"];
 			$this->col[] = ["label"=>"Course","name"=>"course_id","join"=>"courses,title"];
-			$this->col[] = ["label"=>"Created By","name"=>"created_by","join"=>"cms_users,name"];
 			$this->col[] = ["label"=>"Title","name"=>"title"];
 			$this->col[] = ["label"=>"Is Active","name"=>"is_active","callback_php"=>'$row->is_active ? "Yes" : "No"'];
 			$this->col[] = ["label"=>"Created At","name"=>"created_at","callback_php"=>'($row->created_at != "" ? date("jS M Y h:i A",strtotime($row->created_at)) : "")'];
-			$this->col[] = ["label"=>"Updated At","name"=>"updated_at","callback_php"=>'($row->updated_at != "" ? date("jS M Y h:i A",strtotime($row->updated_at)) : "")'];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Topic','name'=>'topic_id','type'=>'select2','validation'=>'required','width'=>'col-sm-9','datatable'=>'topics,title'];
-            $this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
-            $this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
-            $this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
-            $this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
-            $this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-            $this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];# END FORM DO NOT REMOVE THIS LINE
+			$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'courses,title'];
+			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
+			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
-			//$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
-			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
-			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'courses,id'];
+			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			//$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
 			# OLD END FORM
 
 			/* 
@@ -72,8 +63,8 @@
 	        | 
 	        */
 	        $this->sub_module = array();
-			$this->sub_module[] = ['label'=>'Reviews','path'=>'reviews','parent_columns'=>'title','foreign_key'=>'review_by',
-				'button_color'=>'info','button_icon'=>'fa fa-star'];
+            $this->sub_module[] = ['label'=>'Questions','path'=>'quizzes','parent_columns'=>'title','foreign_key'=>'topic_id',
+                'button_color'=>'default','button_icon'=>'fa fa-question-circle'];
 
 
 	        /* 
@@ -266,9 +257,7 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {
-	        $postdata['created_by'] = CRUDBooster::myId();
-
+	    public function hook_before_add(&$postdata) {        
 	        //Your code here
 
 	    }

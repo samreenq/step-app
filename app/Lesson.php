@@ -18,12 +18,12 @@ class Lesson extends Model
     }
     public function result()
     {
-        return $this->hasOne('App\QuizResult','lesson_id','id');
+        return $this->hasOne('App\QuizResult','topic_id','id');
     }
 
     public function summary()
     {
-        return $this->hasOne('App\QuizSummary','lesson_id','lesson_id');
+        return $this->hasOne('App\QuizSummary','topic_id','topic_id');
     }
 
     /**

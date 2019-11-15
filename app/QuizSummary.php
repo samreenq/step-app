@@ -11,7 +11,7 @@ class QuizSummary extends Model
 
     protected $table = 'quiz_summary';
 
-    protected $fillable = ['lesson_id', 'title','description','is_active'];
+    protected $fillable = ['topic_id', 'title','description','is_active'];
 
 
 }

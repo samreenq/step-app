@@ -52,9 +52,9 @@
 		            foreach($data['data'] as $key => $row){
                         $row = (object)$row;
 
-                       $quiz_summary = $quiz_summary->where('lesson_id',$row->id)->first();
+                       $quiz_summary = $quiz_summary->where('topic_id',$row->topic_id)->first();
 
-                        $data['data'][$i]['score'] = $quiz_model->getMaxScore($row->id,$user_id);
+                        $data['data'][$i]['score'] = $quiz_model->getMaxScore($row->topic_id,$user_id);
                         $data['data'][$i]['audio_duration'] = '';
                         $data['data'][$i]['quiz_summary'] = isset($quiz_summary->id) ? $quiz_summary : new \StdClass();
                         $i++;
