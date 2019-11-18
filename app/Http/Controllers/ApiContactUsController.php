@@ -29,7 +29,7 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
-                $this->output(sendErrorToClient('Thank you for contact, we will reach you soon.'));
+                $this->output(makeClientHappy('','Thank you for contact, we will reach you soon.',true));
 		    }
 
             /**

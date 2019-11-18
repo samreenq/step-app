@@ -19,8 +19,8 @@
 
 		    public function hook_before(&$postdata) {
 
-                if(isset($postdata['social_login'])){
-                    if($postdata['social_login'] == 1)
+                if(isset($postdata['social_first_login'])){
+                    if($postdata['social_first_login'] == 1)
                         $this->_requestSocialLogin = true;
                 }
 				$postdata = removeEmptyKeys($postdata);

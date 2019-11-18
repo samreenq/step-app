@@ -38,6 +38,7 @@
 
                 $response = $this->lesson_model
                     ->where('course_id',$course_id)
+                    ->where('is_active',1)
                     ->whereNull('deleted_at')
                     ->paginate(10);
 

@@ -31,7 +31,6 @@ class QuizResult extends Model
 
     public function getTotalPassingTopic($course_id,$user_id)
     {
-        //SELECT MAX(score) FROM quiz_result WHERE lesson_id = 1 AND user_id = 8
         $data = $this->select(DB::raw("COUNT(id) AS total"))
             ->where('course_id',$course_id)
             ->where('user_id',$user_id)
