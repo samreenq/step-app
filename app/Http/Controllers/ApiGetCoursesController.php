@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 		use App\Course;
+        use App\QuizResult;
         use App\Review;
         use Session;
 		use Request;
@@ -29,7 +30,29 @@
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
                 $courses = new Course();
-                $result['data'] = $courses->orderBy('sort_order')->get();
+                $data = $courses->orderBy('sort_order')->get();
+
+                //dd($data);
+                if(count($data) > 0){
+
+                    $records = $data->toArray();
+
+                    //dd($records);
+                    $quiz_result_model = new QuizResult();
+
+                    foreach($records as $key => $row){
+                        echo $row['id'];
+                        $records[$key]['completed_topic'] = $quiz_result_model->getTotalPassingTopic($row['id'],$postdata['user_id']);
+                        unset($records[$key]['icon']);
+                    }
+                    $result['data'] = $records;
+                }
+                else{
+                    $result['data'] = array();
+                }
+
+
+                //$result['data'] = $courses->orderBy('sort_order')->get();
 		    }
 
             /**
