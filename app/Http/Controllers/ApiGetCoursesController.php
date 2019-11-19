@@ -41,7 +41,6 @@
                     $quiz_result_model = new QuizResult();
 
                     foreach($records as $key => $row){
-                        echo $row['id'];
                         $records[$key]['completed_topic'] = $quiz_result_model->getTotalPassingTopic($row['id'],$postdata['user_id']);
                         unset($records[$key]['icon']);
                     }
