@@ -2,8 +2,6 @@
 
 		use App\Course;
         use App\Lesson;
-        use App\LessonQuiz;
-        use App\LessonQuizResult;
         use App\Quiz;
         use App\QuizResult;
         use App\QuizSummary;
@@ -37,22 +35,13 @@
                    // echo '<pre>'; print_r($response->toArray()); exit;
                     $data = makeClientHappyWithPagination($response);
 
-                    $lesson_quiz_model = new LessonQuizResult();
-                    $lesson_quiz = new LessonQuiz();
-
                     $i =0;
 		            foreach($data['data'] as $key => $row){
                         $row = (object)$row;
 
-                        $check_is_passed = $lesson_quiz_model->select('is_passed')->where('lesson_id',$row->id)->first();
-                        $data['data'][$i]['is_passed'] = isset($check_is_passed->is_passed) ? $check_is_passed->is_passed : 0;
-                        $data['data'][$i]['audio_duration'] = '';
-
-                        //Get Lesson Question
-                        $data['data'][$i]['quiz'] = $lesson_quiz->where('lesson_id',$row->id)->with('options')->get();
-
-
-                        $i++;
+                        $lesson_data = $this->lesson_model->getLessonData($row->id);
+                        $data['data'][$i] = array_merge( $data['data'][$i],$lesson_data);
+                         $i++;
                         unset($row);
                     }
                 }

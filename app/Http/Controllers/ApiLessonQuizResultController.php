@@ -1,23 +1,38 @@
 <?php namespace App\Http\Controllers;
 
-
-        use App\Topic;
+		use App\Lesson;
+        use App\LessonQuizResult;
         use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
 
-		class ApiGetTopicsController extends \crocodicstudio\crudbooster\controllers\ApiController {
+		class ApiLessonQuizResultController extends \crocodicstudio\crudbooster\controllers\ApiController {
 
 		    function __construct() {    
-				$this->table       = "topics";        
-				$this->permalink   = "get_topics";    
-				$this->method_type = "get";    
+				$this->table       = "lesson_quiz_result";        
+				$this->permalink   = "lesson_quiz_result";    
+				$this->method_type = "post";
+				$this->model = new LessonQuizResult();
 		    }
 		
 
 		    public function hook_before(&$postdata) {
 		        //This method will be execute before run the main process
+
+                //if exists update
+               /* $check = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
+
+                if ($check) {
+                    $response = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])
+                        ->update([
+                            'is_passed' => $postdata['is_passed'],
+                        ]);
+
+                    $lesson_model = new Lesson();
+                    $data = $lesson_model->getLessonDetail($postdata['topic_id'],$postdata['lesson_id'],$postdata['user_id']);
+                    $this->output(makeClientHappy($data,'Completed Successfully'));
+                }*/
 
 		    }
 
@@ -27,30 +42,11 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
+
 		        //This method will be execute after run the main process
-                $topic_model = new Topic();
-                $response = $topic_model->where('course_id',$postdata['course_id'])
-                    ->where('is_active',1)
-                    ->whereNull('deleted_at')
-                    ->paginate(10);
-
-                if($response){
-                    // echo '<pre>'; print_r($response->toArray()); exit;
-                    $data = makeClientHappyWithPagination($response);
-                    
-                    $i =0;
-                    foreach($data['data'] as $key => $row){
-                        $row = (object)$row;
-
-                        $topic_data = $topic_model->getTopicData($row->id,$postdata['user_id']);
-                        $data['data'][$i] = array_merge( $data['data'][$i],$topic_data);
-
-                        $i++;
-                        unset($row);
-                    }
-                }
-                // echo '<pre>'; print_r($data); exit;
-                $this->output($data);
+                $lesson_model = new Lesson();
+                $data = $lesson_model->getLessonDetail($postdata['topic_id'],$postdata['lesson_id'],$postdata['user_id']);
+                $this->output(makeClientHappy($data,'Completed Successfully'));
 		    }
 
             /**
@@ -61,7 +57,6 @@
             {
                 try{
                     $result = parent::execute_api();
-                    //echo '<pre>'; print_r($result->original); exit;
                     $api_response = isset($result->original) ? $result->original : [];
                     $response = apiResponse($api_response);
 
