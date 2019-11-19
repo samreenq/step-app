@@ -2,6 +2,7 @@
 
 		use App\Course;
         use App\Lesson;
+        use App\LessonQuiz;
         use App\LessonQuizResult;
         use App\Quiz;
         use App\QuizResult;
@@ -25,12 +26,6 @@
 		    public function hook_before(&$postdata) {
 
                 $user_id = $postdata['user_id'];
-		       /* $response = $this->lesson_model
-                    ->leftJoin('courses','courses.id','=',$this->table.'.course_id')
-                   // ->with(['reviews','result'])
-                    ->where('courses.type',$postdata['type'])
-                    ->whereNull($this->table.'.deleted_at')
-                    ->paginate(10);*/
 
                 $response = $this->lesson_model
                     ->where('topic_id',$postdata['topic_id'])
@@ -42,16 +37,21 @@
                    // echo '<pre>'; print_r($response->toArray()); exit;
                     $data = makeClientHappyWithPagination($response);
 
-		            //$quiz_summary = new QuizSummary();
                     $lesson_quiz_model = new LessonQuizResult();
+                    $lesson_quiz = new LessonQuiz();
 
                     $i =0;
 		            foreach($data['data'] as $key => $row){
                         $row = (object)$row;
+
                         $check_is_passed = $lesson_quiz_model->select('is_passed')->where('lesson_id',$row->id)->first();
                         $data['data'][$i]['is_passed'] = isset($check_is_passed->is_passed) ? $check_is_passed->is_passed : 0;
-
                         $data['data'][$i]['audio_duration'] = '';
+
+                        //Get Lesson Question
+                        $data['data'][$i]['quiz'] = $lesson_quiz->where('lesson_id',$row->id)->with('options')->get();
+
+
                         $i++;
                         unset($row);
                     }

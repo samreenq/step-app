@@ -11,6 +11,13 @@ class LessonQuiz extends Model
 
     protected $table = 'lesson_quiz';
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function options(){
+        return $this->hasMany('App\LessonQuizOption','lesson_id','lesson_id');
+    }
+
 
 
 }
