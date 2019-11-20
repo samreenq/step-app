@@ -16,16 +16,16 @@ class Lesson extends Model
 
     public function reviews()
     {
-        return $this->hasMany('App\Review','lesson_id','id');
+        return $this->hasOne('App\Review','lesson_id','id');
     }
     public function result()
     {
         return $this->hasOne('App\QuizResult','topic_id','id');
     }
 
-    public function summary()
+    public function lessonQuiz()
     {
-        return $this->hasOne('App\QuizSummary','topic_id','topic_id');
+        return $this->hasOne('App\LessonQuiz','lesson_id','id');
     }
 
     /**
