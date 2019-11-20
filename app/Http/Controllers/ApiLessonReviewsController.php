@@ -19,30 +19,29 @@
 
 		    public function hook_before(&$postdata) {
 		        //if exists update
-                $check = $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
+                $check = $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->count();
 
-                if ($check) {
+                if ($check > 0) {
                     $response = $this->model->where('review_by', $postdata['user_id'])
+                        ->where('lesson_id',$postdata['lesson_id'])
                         ->update([
                         'rating' => $postdata['rating'],
                         'review' => $postdata['review'],
                         'review_by' => $postdata['user_id']
                     ]);
+                    $lesson_model = new Lesson();
+                    $lesson =  $lesson_model->with('reviews')->where('id',$postdata['lesson_id'])->first();
+                    $lesson_data = $lesson_model->getLessonData($postdata['lesson_id']);
+                    $data = array_merge($lesson->toArray(),$lesson_data);
 
+                    $this->output(makeClientHappy($data,'Successfully Reviewed'));
                 }
                 else {
                     $postdata['review_by'] = $postdata['user_id'];
                     $postdata = filterPostRequest($postdata, $this->table);
                 }
 		        //This method will be execute before run the main process
-                 $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->first();
-
-                $lesson_model = new Lesson();
-                $lesson =  $lesson_model->with('reviews')->where('id',$postdata['lesson_id'])->first();
-                $lesson_data = $lesson_model->getLessonData($postdata['lesson_id']);
-                $data = array_merge($lesson->toArray(),$lesson_data);
-
-                $this->output(makeClientHappy($data,'Successfully Reviewed'));
+               //  $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->first();
 		    }
 
 		    public function hook_query(&$query) {
@@ -52,6 +51,13 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
+
+                $lesson_model = new Lesson();
+                $lesson =  $lesson_model->with('reviews')->where('id',$postdata['lesson_id'])->first();
+                $lesson_data = $lesson_model->getLessonData($postdata['lesson_id']);
+                $data = array_merge($lesson->toArray(),$lesson_data);
+
+                $this->output(makeClientHappy($data,'Successfully Reviewed'));
 		    }
 
             /**
