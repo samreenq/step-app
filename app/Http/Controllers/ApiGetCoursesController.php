@@ -32,12 +32,9 @@
                 $courses = new Course();
                 $data = $courses->orderBy('sort_order')->get();
 
-                //dd($data);
                 if(count($data) > 0){
 
                     $records = $data->toArray();
-
-                    //dd($records);
                     $quiz_result_model = new QuizResult();
 
                     foreach($records as $key => $row){
@@ -50,8 +47,6 @@
                     $result['data'] = array();
                 }
 
-
-                //$result['data'] = $courses->orderBy('sort_order')->get();
 		    }
 
             /**

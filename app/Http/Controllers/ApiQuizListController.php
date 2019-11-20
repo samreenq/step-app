@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 		use App\Quiz;
+        use App\QuizSummary;
         use Session;
 		use Request;
 		use DB;
@@ -17,7 +18,12 @@
 		
 
 		    public function hook_before(&$postdata) {
-                $response = $this->p_model->with(['options'])->get();
+                $response = [];
+                $quiz_summary_model = new QuizSummary();
+                $response['quiz_summary'] = $quiz_summary_model->where('topic_id',$postdata['topic_id'])
+                    ->where('is_active',1)
+                    ->first();
+                $response['quiz'] = $this->p_model->with(['options'])->get();
                 $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 
