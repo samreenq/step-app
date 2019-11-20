@@ -21,9 +21,9 @@
 		        //This method will be execute before run the main process
 
                 //if exists update
-               $check = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
+               $check = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->count();
 
-                if ($check) {
+                if ($check > 0) {
                     $response = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])
                         ->update([
                             'is_passed' => $postdata['is_passed'],

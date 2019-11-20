@@ -78,10 +78,10 @@ class Lesson extends Model
     {
         $topic_model = new Topic();
         $topic =  $topic_model->where('id',$topic_id)->first();
-        $topic_data = $topic_model->getTopicData($topic_id,$lesson_id,$user_id);
+        $topic_data = $topic_model->getTopicData($topic_id,$user_id);
         $data['topic'] = array_merge(isset($topic->id) ? $topic->toArray() : array(),$topic_data);
 
-        $lesson =  $this->where('id',$lesson_id)->first();
+        $lesson =  $this->with('reviews')->where('id',$lesson_id)->first();
         $lesson_data = $this->getLessonData($lesson_id);
         $data['lesson'] = array_merge(isset($lesson->id) ? $lesson->toArray() : array(),$lesson_data);
 
