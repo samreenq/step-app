@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Quiz;
+		use App\ContentPage;
+        use App\Quiz;
         use App\QuizSummary;
         use Session;
 		use Request;
@@ -20,10 +21,13 @@
 		    public function hook_before(&$postdata) {
                 $response = [];
                 $quiz_summary_model = new QuizSummary();
-                $response['quiz_summary'] = $quiz_summary_model->where('topic_id',$postdata['topic_id'])
+                $response['summary'] = $quiz_summary_model->where('topic_id',$postdata['topic_id'])
                     ->where('is_active',1)
                     ->first();
                 $response['quiz'] = $this->p_model->with(['options'])->get();
+
+                $content_page_model = new ContentPage();
+                $response['about'] =  $content_page_model->where('type','about-quiz')->first();
                 $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 
