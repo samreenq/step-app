@@ -21,7 +21,7 @@
 		        //This method will be execute before run the main process
 
                 //if exists update
-               /* $check = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
+               $check = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->exists();
 
                 if ($check) {
                     $response = $this->model->where('user_id',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])
@@ -32,7 +32,7 @@
                     $lesson_model = new Lesson();
                     $data = $lesson_model->getLessonDetail($postdata['topic_id'],$postdata['lesson_id'],$postdata['user_id']);
                     $this->output(makeClientHappy($data,'Completed Successfully'));
-                }*/
+                }
 
 		    }
 
