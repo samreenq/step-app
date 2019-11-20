@@ -31,7 +31,7 @@ class QuizResult extends Model
 
     public function getTotalPassingTopic($course_id,$user_id)
     {
-        $data = $this->select(DB::raw("COUNT(id) AS total"))
+         $data = $this->select(DB::raw("COUNT(DISTINCT topic_id) as total"))
             ->where('course_id',$course_id)
             ->where('user_id',$user_id)
             ->where('status','pass')

@@ -1,9 +1,10 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Lesson;
+		use App\Course;
         use App\Quiz;
         use App\QuizResult;
         use App\Setting;
+        use App\Topic;
         use Session;
 		use Request;
 		use DB;
@@ -68,7 +69,23 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
-                $response = $this->model->find($result['id']);
+                $response = [];
+                $response['result'] = $this->model->find($result['id']);
+
+                $course_model = new Course();
+                $course_data  = $course_model->where('id',$postdata['topic_id'])->first();
+                $course = isset($course_data->id) ? $course_data->toArray(): [];
+
+                $course['completed_topic'] = $this->model->getTotalPassingTopic($postdata['topic_id'],$postdata['user_id']);
+                unset($course['icon']);
+
+                $response['course'] = $course;
+
+                $topic_model = new Topic();
+                $topic =  $topic_model->where('id',$postdata['topic_id'])->first();
+                $topic_data = $topic_model->getTopicData($postdata['topic_id'],$postdata['user_id']);
+                $response['topic'] = array_merge(isset($topic->id) ? $topic->toArray() : array(),$topic_data);
+
                 $this->output(makeClientHappy($response));
 		    }
 
