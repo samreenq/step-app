@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 		use App\Course;
+        use App\Option;
         use App\Quiz;
         use App\QuizResult;
         use App\Setting;
@@ -30,9 +31,15 @@
                     $count_correct = 0;
                     $count_wrong = 0;
 
+                    $option_model = new Option();
                     foreach($quiz as $rows){
 
-                        if($rows['is_correct'] == 1){
+                        //Check if answer is correct or not
+                       $is_correct = $option_model->where('quiz_id',$rows['question_id'])
+                         ->where('id',$rows['answer_id'])->where('is_correct',1)->count();
+
+
+                        if($is_correct == 1){
                             $count_correct++;
                         }
                         else{
