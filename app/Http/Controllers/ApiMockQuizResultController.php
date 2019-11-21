@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 		use App\MockQuiz;
+        use App\MockQuizOption;
         use App\MockQuizResult;
         use App\Setting;
         use Session;
@@ -27,10 +28,15 @@
 
                     $count_correct = 0;
                     $count_wrong = 0;
+                    $option_model = new MockQuizOption();
 
 		            foreach($quiz as $rows){
 
-                        if($rows['is_correct'] == 1){
+                        //Check if answer is correct or not
+                        $is_correct = $option_model->where('mock_quiz_id',$rows['question_id'])
+                            ->where('id',$rows['answer_id'])->where('is_correct',1)->count();
+
+                        if($is_correct == 1){
                             $count_correct++;
                         }
                         else{
