@@ -28,6 +28,21 @@ class QuizResult extends Model
      * @param $user_id
      * @return float|int
      */
+    public function getMaxScoreByCourse($course_id,$user_id)
+    {
+        //SELECT MAX(score) FROM quiz_result WHERE lesson_id = 1 AND user_id = 8
+        $data = $this->select(DB::raw("MAX(score) as max_score"))
+            ->where('course_id',$course_id)
+            ->where('user_id',$user_id)
+            ->first();
+        return (isset($data->max_score) && !empty($data->max_score)) ?  round($data->max_score) : 0;
+    }
+
+    /**
+     * @param $course_id
+     * @param $user_id
+     * @return float|int
+     */
 
     public function getTotalPassingTopic($course_id,$user_id)
     {
@@ -55,22 +70,81 @@ class QuizResult extends Model
         return $data;
     }
 
+
     /**
      * @param $user_id
      * @return mixed
      */
     public function getQuizResult($user_id)
     {
-       /* SELECT topic_id,MAX(score),attempted,correct,wrong
-        FROM quiz_result
-        WHERE user_id = 1
-        GROUP BY topic_id*/
-        $data = $this->select(DB::raw("MAX(".$this->table.".score) as score"),$this->table.".attempted,".$this->table.".correct,".$this->table.".wrong")
-            ->where($this->table.'.user_id',$user_id)
-            ->groupBy($this->table.'.topic_id')
-            ->get();
+        $data = \DB::select("SELECT topic_id,MAX(score) as score,attempted,correct,wrong
+                FROM quiz_result
+                WHERE user_id = $user_id
+                GROUP BY topic_id");
 
         return $data;
+    }
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function coursesScore($user_id)
+    {
+        $courses = Course::where('course_type','lesson')->where('is_active',1)->whereNull('deleted_at')->get();
+        $return = [];
+        if(isset($courses)){
+            foreach($courses as $course){
+                $data['title'] = $course->title;
+                $data['score'] = $this->getMaxScoreByCourse($course->id,$user_id);
+
+                $return[] = $data;
+            }
+        }
+        return $return;
+
+    }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+
+    public function quizStats($user_id)
+    {
+        $response['topic_graph'] = $this->coursesScore($user_id);
+
+        $topic_model = new Topic();
+        $total_topic = $topic_model->where('is_active',1)->whereNull('deleted_at')->count();
+
+        $quiz_model = new Quiz();
+        $total_questions = $quiz_model->where('is_active',1)->count();
+
+        $user_quiz_total = $this->getQuizResult($user_id);
+
+        $attempted = 0;
+        $correct = 0;
+        $wrong = 0;
+        $score = 0;
+
+        if(isset($user_quiz_total)){
+
+            foreach($user_quiz_total as $quiz){
+
+                $score += $quiz->score;
+                $attempted += $quiz->attempted;
+                $correct += $quiz->correct;
+                $wrong += $quiz->wrong;
+            }
+        }
+
+        $response['total_questions'] = $total_questions;
+        $response['score_percent'] =$score/$total_topic;
+        $response['attempted'] = $attempted;
+        $response['correct'] = $correct;
+        $response['wrong'] = $wrong;
+        return $response;
+        echo '<pre>'; print_r($user_quiz_total); exit;
     }
 
 }
