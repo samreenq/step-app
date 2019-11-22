@@ -112,13 +112,13 @@ class QuizResult extends Model
 
     public function quizStats($user_id)
     {
-        $response['topic_graph'] = $this->coursesScore($user_id);
+        $response['graph'] = $this->coursesScore($user_id);
 
         $topic_model = new Topic();
         $total_topic = $topic_model->where('is_active',1)->whereNull('deleted_at')->count();
 
         $quiz_model = new Quiz();
-        $total_questions = $quiz_model->where('is_active',1)->count();
+        $total_questions = $quiz_model->where('is_active',1)->whereNull('deleted_at')->count();
 
         $user_quiz_total = $this->getQuizResult($user_id);
 
@@ -138,11 +138,15 @@ class QuizResult extends Model
             }
         }
 
-        $response['total_questions'] = $total_questions;
-        $response['score_percent'] =$score/$total_topic;
-        $response['attempted'] = $attempted;
-        $response['correct'] = $correct;
-        $response['wrong'] = $wrong;
+        $score_arr = [];
+        $score_arr['total_questions'] = $total_questions;
+        $score_arr['score'] = $score/$total_topic;
+        $score_arr['attempted'] = $attempted;
+        $score_arr['correct'] = $correct;
+        $score_arr['wrong'] = $wrong;
+
+        $response['score'] = $score_arr;
+
         return $response;
     }
 

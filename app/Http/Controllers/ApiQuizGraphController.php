@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Quiz;
+		use App\MockQuizResult;
+        use App\Quiz;
         use App\QuizResult;
         use App\Topic;
         use Session;
@@ -22,6 +23,11 @@
                 $response = [];
                 $quiz_result_model = new QuizResult();
                 $response['quiz_result'] = $quiz_result_model->quizStats($postdata['user_id']);
+
+                $mock_quiz_model = new MockQuizResult();
+               $response['mock_result'] = $mock_quiz_model->quizStats($postdata['user_id']);
+
+
                 $this->output(makeClientHappy($response));
 		    }
 
