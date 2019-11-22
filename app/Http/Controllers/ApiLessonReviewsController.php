@@ -29,6 +29,7 @@
                         'review' => $postdata['review'],
                         'review_by' => $postdata['user_id']
                     ]);
+
                     $lesson_model = new Lesson();
                     $lesson =  $lesson_model->where('id',$postdata['lesson_id'])->first();
                     $lesson_data = $lesson_model->getLessonData($postdata['lesson_id'],$postdata['user_id']);

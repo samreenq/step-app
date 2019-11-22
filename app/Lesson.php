@@ -65,11 +65,13 @@ class Lesson extends Model
             ->where('user_id',$user_id)
             ->first();
 
-        $data['audio_duration'] = '';
-        $data['is_passed'] = isset($check_is_passed->is_passed) ? $check_is_passed->is_passed : 0;
 
-        $data['reviews'] = $review_model ->where('lesson_id',$lesson_id)
+        $data['audio_duration'] = '';
+        $data['is_passed'] = $check_is_passed->is_passed;
+        $review  = $review_model ->where('lesson_id',$lesson_id)
             ->where('review_by',$user_id)->first();
+
+        $data['reviews'] =  isset($review->id) ? $review->toArray() : new \StdClass();
 
         //Get Lesson Question
         $data['quiz'] = $lesson_quiz->where('lesson_id',$lesson_id)->with('options')->get();
