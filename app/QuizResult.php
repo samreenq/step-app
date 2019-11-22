@@ -39,4 +39,38 @@ class QuizResult extends Model
 
         return (isset($data->total) && !empty($data->total)) ?  $data->total : 0;
     }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public  function getCoursesScore($user_id)
+    {
+        $data = $this->select(DB::raw("MAX(".$this->table.".score) as score, courses.title"))
+            ->leftJoin('courses','courses.id','=',$this->table.'.course_id')
+            ->where($this->table.'.user_id',$user_id)
+            ->groupBy($this->table.'.course_id')
+            ->get();
+
+        return $data;
+    }
+
+    /**
+     * @param $user_id
+     * @return mixed
+     */
+    public function getQuizResult($user_id)
+    {
+       /* SELECT topic_id,MAX(score),attempted,correct,wrong
+        FROM quiz_result
+        WHERE user_id = 1
+        GROUP BY topic_id*/
+        $data = $this->select(DB::raw("MAX(".$this->table.".score) as score"),$this->table.".attempted,".$this->table.".correct,".$this->table.".wrong")
+            ->where($this->table.'.user_id',$user_id)
+            ->groupBy($this->table.'.topic_id')
+            ->get();
+
+        return $data;
+    }
+
 }

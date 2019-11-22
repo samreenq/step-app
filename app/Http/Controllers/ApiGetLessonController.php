@@ -26,7 +26,6 @@
                 $user_id = $postdata['user_id'];
 
                 $response = $this->lesson_model
-                    ->with('reviews')
                     ->where('topic_id',$postdata['topic_id'])
                     ->where('is_active',1)
                     ->whereNull('deleted_at')
@@ -40,7 +39,7 @@
 		            foreach($data['data'] as $key => $row){
                         $row = (object)$row;
 
-                        $lesson_data = $this->lesson_model->getLessonData($row->id);
+                        $lesson_data = $this->lesson_model->getLessonData($row->id,$user_id);
                         $data['data'][$i] = array_merge( $data['data'][$i],$lesson_data);
                          $i++;
                         unset($row);

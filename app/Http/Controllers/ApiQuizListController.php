@@ -19,12 +19,15 @@
 		
 
 		    public function hook_before(&$postdata) {
+
                 $response = [];
                 $quiz_summary_model = new QuizSummary();
                 $response['summary'] = $quiz_summary_model->where('topic_id',$postdata['topic_id'])
                     ->where('is_active',1)
                     ->first();
-                $response['quiz'] = $this->p_model->with(['options'])->get();
+
+                $response['quiz'] = $this->p_model->with(['options'])
+                    ->where('topic_id',$postdata['topic_id'])->get();
 
                 $content_page_model = new ContentPage();
                 $response['about'] =  $content_page_model->where('type','about-quiz')->first();
