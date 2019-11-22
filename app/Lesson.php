@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\LessonQuiz;
 use App\LessonQuizResult;
+use Illuminate\Support\Facades\Storage;
 
 class Lesson extends Model
 {
@@ -44,7 +45,7 @@ class Lesson extends Model
     public function getAudioFilePathAttribute()
     {
         if(!empty($this->audio_file))
-            return url('/').'/'.$this->audio_file;
+            return Storage::url($this->audio_file);
         else
             return '';
     }
