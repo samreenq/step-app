@@ -144,7 +144,6 @@ class QuizResult extends Model
         $response['correct'] = $correct;
         $response['wrong'] = $wrong;
         return $response;
-        echo '<pre>'; print_r($user_quiz_total); exit;
     }
 
 }

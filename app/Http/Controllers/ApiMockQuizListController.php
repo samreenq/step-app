@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-		use App\MockQuiz;
+		use App\ContentPage;
+        use App\MockQuiz;
+        use App\MockSummary;
         use Session;
 		use Request;
 		use DB;
@@ -17,7 +19,17 @@
 		
 
 		    public function hook_before(&$postdata) {
-                $response = $this->p_model->with(['options'])->get();
+
+                $quiz_summary_model = new MockSummary();
+                $response['summary'] = $quiz_summary_model
+                    ->where('is_active',1)
+                    ->first();
+
+                $response['quiz'] = $this->p_model->with(['options'])->get();
+
+                $content_page_model = new ContentPage();
+                $response['about'] =  $content_page_model->where('type','about-mock-quiz')->first();
+
                 $this->output(makeClientHappy($response));
 		        //This method will be execute before run the main process
 
