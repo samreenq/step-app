@@ -18,7 +18,7 @@
 
 		    public function hook_before(&$postdata) {
 
-                $user_data = $this->user_model->where(['id'=> $postdata['user_id'], 'is_active'=>1])->first();
+                $user_data = $this->user_model->with('token')->where(['id'=> $postdata['user_id'], 'is_active'=>1])->first();
 
 				if(empty($user_data)) {
 					$this->output(sendErrorToClient('No User Found.'));
