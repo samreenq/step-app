@@ -23,46 +23,57 @@
 
 		    public function hook_before(&$postdata) {
 
-                $quiz = is_string($postdata['quiz']) ? json_decode($postdata['quiz'],true) : $postdata['quiz'];
-                //  dd($postdata);
+                $count_questions = Quiz::where('topic_id', $postdata['topic_id'])->count();
+                $quiz = is_string($postdata['quiz']) ? json_decode($postdata['quiz'], true) : $postdata['quiz'];
+                    //  dd($postdata);
+                if(is_string($postdata['quiz']) && (is_array($quiz) && count($quiz) > 0)) {
 
-                if(count($quiz)>0) {
+                        $count_correct = 0;
+                        $count_wrong = 0;
 
-                    $count_correct = 0;
-                    $count_wrong = 0;
+                        $option_model = new Option();
+                        foreach ($quiz as $rows) {
 
-                    $option_model = new Option();
-                    foreach($quiz as $rows){
-
-                        //Check if answer is correct or not
-                       $is_correct = $option_model->where('quiz_id',$rows['question_id'])
-                         ->where('id',$rows['answer_id'])->where('is_correct',1)->count();
+                            //Check if answer is correct or not
+                            $is_correct = $option_model->where('quiz_id', $rows['question_id'])
+                                ->where('id', $rows['answer_id'])->where('is_correct', 1)->count();
 
 
-                        if($is_correct == 1){
-                            $count_correct++;
+                            if ($is_correct == 1) {
+                                $count_correct++;
+                            } else {
+                                $count_wrong++;
+                            }
                         }
-                        else{
-                            $count_wrong++;
-                        }
-                    }
 
-                    $count_questions = Quiz::where('topic_id',$postdata['topic_id'])->count();
-                    $passing_score = Setting::where('name','passing_score')->first()->content;
-                    $marks_per_question = Setting::where('name','marks_per_question')->first()->content;
-                    $score = (($count_correct * $marks_per_question) / $passing_score) * 100;
-                    //set data
-                    $postdata['total_questions'] = $count_questions;
-                    $postdata['correct'] = $count_correct;
-                    $postdata['wrong'] = $count_wrong;
-                    $postdata['attempted'] = $count_wrong + $count_correct;
-                    $postdata['score'] = $score;
-                    $postdata['status'] = $score >= $passing_score ? "pass" : "fail";
-                    unset($postdata['quiz']);
-                    //This method will be execute before run the main process
+
+                        $passing_score = Setting::where('name', 'passing_score')->first()->content;
+                        $marks_per_question = Setting::where('name', 'marks_per_question')->first()->content;
+                        $obtained_marks = $count_correct * $marks_per_question;
+                        $total_marks = $count_questions*$marks_per_question;
+                        $score = ($obtained_marks / $total_marks) * 100;
+
+                        //set data
+                        $postdata['total_questions'] = $count_questions;
+                        $postdata['correct'] = $count_correct;
+                        $postdata['wrong'] = $count_wrong;
+                        $postdata['attempted'] = $count_wrong + $count_correct;
+                        $postdata['score'] = $score;
+                        $postdata['status'] = $score >= $passing_score ? "pass" : "fail";
+                        unset($postdata['quiz']);
+                        //This method will be execute before run the main process
                 }
                 else{
-                    $this->output(sendErrorToClient('Invalid Request'));
+
+                    $postdata['total_questions'] = $count_questions;
+                    $postdata['correct'] = 0;
+                    $postdata['wrong'] = 0;
+                    $postdata['attempted'] = 0;
+                    $postdata['score'] = 0;
+                    $postdata['status'] = "fail";
+                    unset($postdata['quiz']);
+
+                    //$this->output(sendErrorToClient('Invalid Request'));
                 }
 
                 //This method will be execute before run the main process

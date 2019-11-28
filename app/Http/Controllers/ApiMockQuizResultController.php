@@ -22,34 +22,38 @@
 		    public function hook_before(&$postdata) {
 
 		        $quiz = is_string($postdata['quiz']) ? json_decode($postdata['quiz'],true) : $postdata['quiz'];
-                //  dd($postdata);
 
-		        if(count($quiz)>0) {
+                $count_questions = MockQuiz::where('id', '>', 0)->count();
+
+                if(is_string($postdata['quiz']) && (is_array($quiz) && count($quiz) > 0)) {
+                    //  dd($postdata);
 
                     $count_correct = 0;
                     $count_wrong = 0;
                     $option_model = new MockQuizOption();
 
-		            foreach($quiz as $rows){
+                    foreach ($quiz as $rows) {
 
                         //Check if answer is correct or not
-                        $is_correct = $option_model->where('mock_quiz_id',$rows['question_id'])
-                            ->where('id',$rows['answer_id'])->where('is_correct',1)->count();
+                        $is_correct = $option_model->where('mock_quiz_id', $rows['question_id'])
+                            ->where('id', $rows['answer_id'])->where('is_correct', 1)->count();
 
-                        if($is_correct == 1){
+                        if ($is_correct == 1) {
                             $count_correct++;
-                        }
-                        else{
+                        } else {
                             $count_wrong++;
                         }
                     }
 
                     //$count_wrong = substr_count($postdata['is_correct'], 0);
-                   // $count_correct = substr_count($postdata['is_correct'], 1);
-                    $count_questions = MockQuiz::where('id', '>', 0)->count();
+                    // $count_correct = substr_count($postdata['is_correct'], 1);
+
                     $passing_score = Setting::where('name', 'mock_passing_score')->first()->content;
                     $marks_per_question = Setting::where('name', 'mock_marks_per_question')->first()->content;
-                    $score = (($count_correct * $marks_per_question) / $passing_score) * 100;
+                    $obtained_marks = $count_correct * $marks_per_question;
+                    $total_marks = $count_questions*$marks_per_question;
+                    $score = ($obtained_marks / $total_marks) * 100;
+
                     //set data
                     $postdata['total_questions'] = $count_questions;
                     $postdata['correct'] = $count_correct;
@@ -61,7 +65,14 @@
                     //This method will be execute before run the main process
                 }
 		        else{
-                    $this->output(sendErrorToClient('Invalid Request'));
+                    //set data
+                    $postdata['total_questions'] = $count_questions;
+                    $postdata['correct'] = 0;
+                    $postdata['wrong'] = 0;
+                    $postdata['attempted'] = 0;
+                    $postdata['score'] = 0;
+                    $postdata['status'] = "fail";
+                    unset($postdata['quiz']);
                 }
 
 		    }

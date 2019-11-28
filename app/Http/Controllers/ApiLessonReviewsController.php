@@ -19,14 +19,13 @@
 
 		    public function hook_before(&$postdata) {
 		        //if exists update
-                $check = $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->count();
-
+               $check = $this->model->where('review_by',$postdata['user_id'])->where('lesson_id',$postdata['lesson_id'])->count();
                 if ($check > 0) {
                     $response = $this->model->where('review_by', $postdata['user_id'])
                         ->where('lesson_id',$postdata['lesson_id'])
                         ->update([
                         'rating' => $postdata['rating'],
-                        'review' => $postdata['review'],
+                        'review' => isset($postdata['review']) ? $postdata['review'] : '',
                         'review_by' => $postdata['user_id']
                     ]);
                     $lesson_model = new Lesson();
@@ -53,7 +52,7 @@
 		        //This method will be execute after run the main process
                // echo '<pre>'; print_r($postdata); exit;
                 $lesson_model = new Lesson();
-                $lesson =  $lesson_model->with('reviews')->where('id',$postdata['lesson_id'])->first();
+                $lesson =  $lesson_model->where('id',$postdata['lesson_id'])->first();
                 $lesson_data = $lesson_model->getLessonData($postdata['lesson_id'],$postdata['review_by']);
                 $data = array_merge($lesson->toArray(),$lesson_data);
 
