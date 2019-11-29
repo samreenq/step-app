@@ -3,6 +3,7 @@
 		use App\MockQuiz;
         use App\MockQuizOption;
         use App\MockQuizResult;
+        use App\MockQuizResultDetail;
         use App\Setting;
         use Session;
 		use Request;
@@ -16,6 +17,7 @@
 				$this->permalink   = "mock_quiz_result";    
 				$this->method_type = "post";
 				$this->model = new MockQuizResult();
+				$this->quizDetail = [];
 		    }
 		
 
@@ -30,6 +32,7 @@
 
                     $count_correct = 0;
                     $count_wrong = 0;
+                    $mock_quiz_model = new MockQuiz();
                     $option_model = new MockQuizOption();
 
                     foreach ($quiz as $rows) {
@@ -43,6 +46,21 @@
                         } else {
                             $count_wrong++;
                         }
+
+                        $course_type = $postdata['course_type'];
+
+                        if(!isset($postdata['course_type'])){
+                            $mock_quiz_raw =  $mock_quiz_model->select('course_type')
+                                ->where('id', $rows['question_id'])->first();
+
+                            $course_type =  $mock_quiz_raw->course_type;
+                           // echo '<pre>'; print_r($mock_quiz_raw->course_type); exit;
+                        }
+
+                        $rows['user_id'] = $postdata['user_id'];
+                        $rows['course_type'] = $course_type;
+                        $rows['is_correct'] = $is_correct;
+                        $this->quizDetail[] = $rows;
                     }
 
                     //$count_wrong = substr_count($postdata['is_correct'], 0);
@@ -84,6 +102,18 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
+
+                //Save Quiz Detail
+                $mock_quiz_detail = new MockQuizResultDetail();
+
+                if(count($this->quizDetail)>0){
+                    foreach($this->quizDetail as $key => $quiz_detail){
+
+                        $this->quizDetail[$key]['quiz_result_id'] = $result['id'];
+                        $mock_quiz_detail->create($this->quizDetail[$key]);
+                    }
+                }
+
                 $response = $this->model->find($result['id']);
                 $this->output(makeClientHappy($response));
 

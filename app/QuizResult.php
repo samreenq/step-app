@@ -138,9 +138,11 @@ class QuizResult extends Model
             }
         }
 
+        $percentage = ($correct/$total_questions)*100;
+
         $score_arr = [];
         $score_arr['total_questions'] = $total_questions;
-        $score_arr['score'] = $score/$total_topic;
+        $score_arr['score'] = round($percentage,2);
         $score_arr['attempted'] = $attempted;
         $score_arr['correct'] = $correct;
         $score_arr['wrong'] = $wrong;

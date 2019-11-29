@@ -25,7 +25,7 @@ Class MockQuizResult extends Model
     {
         $response = [];
 
-        $quiz_result_model = new QuizResult();
+        $quiz_result_model = new MockQuizResult();
         $response['graph'] = $quiz_result_model->coursesScore($user_id);
 
         $mock_quiz = new MockQuiz();
@@ -40,6 +40,29 @@ Class MockQuizResult extends Model
 
         return $response;
        //echo '<pre>'; print_r($quiz_result); exit;
+    }
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function coursesScore($user_id)
+    {
+        $return = [];
+        $courses = Course::where('course_type','lesson')->where('is_active',1)->whereNull('deleted_at')->get();
+
+        $quiz_result_detail = new MockQuizResultDetail();
+
+        if(isset($courses)){
+            foreach($courses as $course){
+                $data['title'] = $course->title;
+                $data['score'] = $quiz_result_detail->getMaxScoreByCourse($user_id,$course->type);
+
+                $return[] = $data;
+            }
+        }
+        return $return;
+
     }
 
 }
