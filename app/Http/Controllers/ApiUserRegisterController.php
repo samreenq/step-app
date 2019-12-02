@@ -33,7 +33,7 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
-                if($result['api_status']) {
+                if($result['api_status'] == 1){
                     $this->user_model->setAccessToken($result['id']);
                     $user_data = $this->user_model->with('token')->find($result['id']);
 

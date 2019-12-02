@@ -28,29 +28,34 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
-                $topic_model = new Topic();
-                $response = $topic_model->where('course_id',$postdata['course_id'])
-                    ->where('is_active',1)
-                    ->whereNull('deleted_at')
-                    ->paginate(10);
 
-                if($response){
-                    // echo '<pre>'; print_r($response->toArray()); exit;
-                    $data = makeClientHappyWithPagination($response);
-                    
-                    $i =0;
-                    foreach($data['data'] as $key => $row){
-                        $row = (object)$row;
+                if($result['api_status'] == 1){
 
-                        $topic_data = $topic_model->getTopicData($row->id,$postdata['user_id']);
-                        $data['data'][$i] = array_merge( $data['data'][$i],$topic_data);
+                    $topic_model = new Topic();
+                    $response = $topic_model->where('course_id',$postdata['course_id'])
+                        ->where('is_active',1)
+                        ->whereNull('deleted_at')
+                        ->paginate(10);
 
-                        $i++;
-                        unset($row);
+                    if($response){
+                        // echo '<pre>'; print_r($response->toArray()); exit;
+                        $data = makeClientHappyWithPagination($response);
+
+                        $i =0;
+                        foreach($data['data'] as $key => $row){
+                            $row = (object)$row;
+
+                            $topic_data = $topic_model->getTopicData($row->id,$postdata['user_id']);
+                            $data['data'][$i] = array_merge( $data['data'][$i],$topic_data);
+
+                            $i++;
+                            unset($row);
+                        }
                     }
+                    // echo '<pre>'; print_r($data); exit;
+                    $this->output($data);
                 }
-                // echo '<pre>'; print_r($data); exit;
-                $this->output($data);
+
 		    }
 
             /**

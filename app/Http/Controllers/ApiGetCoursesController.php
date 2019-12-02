@@ -29,22 +29,25 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
-                $courses = new Course();
-                $data = $courses->orderBy('sort_order')->get();
+                if($result['api_status'] == 1){
 
-                if(count($data) > 0){
+                    $courses = new Course();
+                    $data = $courses->orderBy('sort_order')->get();
 
-                    $records = $data->toArray();
-                    $quiz_result_model = new QuizResult();
+                    if(count($data) > 0){
 
-                    foreach($records as $key => $row){
-                        $records[$key]['completed_topic'] = $quiz_result_model->getTotalPassingTopic($row['id'],$postdata['user_id']);
-                        unset($records[$key]['icon']);
+                        $records = $data->toArray();
+                        $quiz_result_model = new QuizResult();
+
+                        foreach($records as $key => $row){
+                            $records[$key]['completed_topic'] = $quiz_result_model->getTotalPassingTopic($row['id'],$postdata['user_id']);
+                            unset($records[$key]['icon']);
+                        }
+                        $result['data'] = $records;
                     }
-                    $result['data'] = $records;
-                }
-                else{
-                    $result['data'] = array();
+                    else{
+                        $result['data'] = array();
+                    }
                 }
 
 		    }

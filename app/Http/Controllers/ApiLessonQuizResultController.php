@@ -44,9 +44,12 @@
 		    public function hook_after($postdata,&$result) {
 
 		        //This method will be execute after run the main process
-                $lesson_model = new Lesson();
-                $data = $lesson_model->getLessonDetail($postdata['topic_id'],$postdata['lesson_id'],$postdata['user_id']);
-                $this->output(makeClientHappy($data,'Completed Successfully'));
+                if($result['api_status'] == 1){
+                    $lesson_model = new Lesson();
+                    $data = $lesson_model->getLessonDetail($postdata['topic_id'],$postdata['lesson_id'],$postdata['user_id']);
+                    $this->output(makeClientHappy($data,'Completed Successfully'));
+                }
+
 		    }
 
             /**

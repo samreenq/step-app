@@ -102,20 +102,21 @@
 
 		    public function hook_after($postdata,&$result) {
 		        //This method will be execute after run the main process
+                if($result['api_status'] == 1){
+                    //Save Quiz Detail
+                    $mock_quiz_detail = new MockQuizResultDetail();
 
-                //Save Quiz Detail
-                $mock_quiz_detail = new MockQuizResultDetail();
+                    if(count($this->quizDetail)>0){
+                        foreach($this->quizDetail as $key => $quiz_detail){
 
-                if(count($this->quizDetail)>0){
-                    foreach($this->quizDetail as $key => $quiz_detail){
-
-                        $this->quizDetail[$key]['quiz_result_id'] = $result['id'];
-                        $mock_quiz_detail->create($this->quizDetail[$key]);
+                            $this->quizDetail[$key]['quiz_result_id'] = $result['id'];
+                            $mock_quiz_detail->create($this->quizDetail[$key]);
+                        }
                     }
-                }
 
-                $response = $this->model->find($result['id']);
-                $this->output(makeClientHappy($response));
+                    $response = $this->model->find($result['id']);
+                    $this->output(makeClientHappy($response));
+                }
 
 		    }
 

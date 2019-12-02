@@ -25,8 +25,10 @@
 		    }
 
 		    public function hook_after($postdata,&$result) {
-				
-				AccessToken::where('user_id',$this->user_id)->update(['expiry_time' => time()]);
+
+                if($result['api_status'] == 1){
+                    AccessToken::where('user_id',$this->user_id)->update(['expiry_time' => time()]);
+                }
 
 		    }
 
