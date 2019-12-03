@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-		use App\MockQuiz;
+		use App\AppUser;
+        use App\MockQuiz;
         use App\MockQuizOption;
         use App\MockQuizResult;
         use App\MockQuizResultDetail;
@@ -113,6 +114,31 @@
                             $mock_quiz_detail->create($this->quizDetail[$key]);
                         }
                     }
+
+                    //Update App User for score update
+                    $max_quiz_result =   $this->model->getQuizResult($postdata['user_id']);
+                    $crown_badge_score = CRUDBooster::getSetting("crown_badge_score");
+                    $gold_badge_score = CRUDBooster::getSetting("gold_badge_score");
+                    $silver_badge_score = CRUDBooster::getSetting("silver_badge_score");
+
+                    $badge = '';
+                    if($max_quiz_result['score'] >= $crown_badge_score){
+                        $badge = 'crown';
+                    }
+                    elseif($max_quiz_result['score'] >= $gold_badge_score && $max_quiz_result['score'] < $crown_badge_score){
+                        $badge = 'gold';
+                    }
+                    elseif($max_quiz_result['score'] >= $silver_badge_score && $max_quiz_result['score'] < $gold_badge_score){
+                        $badge = 'silver';
+                    }
+
+
+                    $app_user_model = new AppUser();
+                    $app_user_model->find($postdata['user_id'])->update(
+                        ['avg_mock_score' => $max_quiz_result['score'],
+                            'badge' => $badge]
+                    );
+
 
                     $response = $this->model->find($result['id']);
                     $this->output(makeClientHappy($response));

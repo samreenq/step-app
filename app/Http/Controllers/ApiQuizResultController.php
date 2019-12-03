@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-		use App\Course;
+		use App\AppUser;
+        use App\Course;
         use App\Option;
         use App\Quiz;
         use App\QuizResult;
@@ -89,6 +90,15 @@
 		        //This method will be execute after run the main process
 
                 if($result['api_status'] == 1){
+
+                    //Update App User for score update
+                    $max_quiz_result = $this->model->getTotalScore($postdata['user_id']);
+
+                    $app_user_model = new AppUser();
+                    $app_user_model->find($postdata['user_id'])->update(
+                        ['avg_score' => $max_quiz_result['score']]
+                    );
+
 
                     $response = [];
                     $response['result'] = $this->model->find($result['id']);

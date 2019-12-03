@@ -20,7 +20,7 @@ class AppUser extends Model
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 'password', 'photo', 'device_token', 'platform_type', 'platform_id', 'image_url',
-        'reset_token', 'is_paid', 'is_active','verification_token','phone_number'
+        'reset_token', 'is_paid', 'is_active','verification_token','phone_number','avg_score','badge','avg_mock_score'
     ];
 
     protected $hidden = [

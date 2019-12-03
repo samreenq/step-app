@@ -32,7 +32,7 @@ Class MockQuizResult extends Model
         $total_questions = $mock_quiz->where('is_active',1)->whereNull('deleted_at')->count();
 
         $quiz_result =  $this->getQuizResult($user_id);
-       // echo '<pre>'; print_r($quiz_result); exit;
+
         $score_arr = isset($quiz_result) ? $quiz_result->toArray() : [];
         $score_arr['total_questions'] = $total_questions;
 

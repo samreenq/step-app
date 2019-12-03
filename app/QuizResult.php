@@ -113,9 +113,19 @@ class QuizResult extends Model
     public function quizStats($user_id)
     {
         $response['graph'] = $this->coursesScore($user_id);
+        $response['score'] = $this->getTotalScore($user_id);
 
-        $topic_model = new Topic();
-        $total_topic = $topic_model->where('is_active',1)->whereNull('deleted_at')->count();
+        return $response;
+    }
+
+    /**
+     * @param $user_id
+     * @return array
+     */
+    public function getTotalScore($user_id)
+    {
+        /*$topic_model = new Topic();
+        $total_topic = $topic_model->where('is_active',1)->whereNull('deleted_at')->count();*/
 
         $quiz_model = new Quiz();
         $total_questions = $quiz_model->where('is_active',1)->whereNull('deleted_at')->count();
@@ -147,9 +157,7 @@ class QuizResult extends Model
         $score_arr['correct'] = $correct;
         $score_arr['wrong'] = $wrong;
 
-        $response['score'] = $score_arr;
-
-        return $response;
+        return $score_arr;
     }
 
 }
