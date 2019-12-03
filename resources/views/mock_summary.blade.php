@@ -7,12 +7,11 @@
         </div>
 
 
-        <form method='post' id="addUpdateForm">
+        <form method='post' id="addUpdateMockForm">
             @csrf
             <input type='hidden' id='id' name="id" value="{!! isset($data['id']) ? $data['id'] : '' !!}"/>
-            <input type='hidden' name='topic_id' id="topic_id" />
             <input type='hidden' name='is_active' value="1"/>
-            <div class="modal-body" id="addUpdateModalBody">
+            <div class="modal-body" id="addUpdateMockModalBody">
                 <span id="msg"></span>
                 <div class="row">
                     <div class="col-sm-12">
@@ -24,7 +23,7 @@
                     <div class="col-sm-12">
                         <label>Description</label>
                         <textarea
-                                 name='description' class='form-control' required >{!! isset($data['description']) ? $data['description'] : '' !!}</textarea>
+                                name='description' class='form-control' required >{!! isset($data['description']) ? $data['description'] : '' !!}</textarea>
                     </div>
                 </div>
                 <div class="row">

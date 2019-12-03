@@ -31,3 +31,7 @@ Route::any('/admin/quiz-summary', 'QuizSummaryController@getData');
 Route::post('/admin/mock-quiz-store', 'AdminQuestionController@storeMock')->name('mock-quiz.store');
 Route::any('/reset-password/token/{token}', 'WebController@resetPassword');
 Route::any('/activate/token/{token}', 'WebController@activateAccount');
+
+
+Route::post('/admin/mock-summary-store', 'MockSummaryController@store')->name('mock.summary-store');
+Route::any('/admin/mock-summary', 'MockSummaryController@getData');

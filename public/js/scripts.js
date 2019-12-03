@@ -33,11 +33,11 @@ $(document).on("submit", "#addForm", function (event) {
 $(document).on("submit", "#addUpdateForm", function (event) {
     event.preventDefault();
     $("#addBtn").attr("disabled", true);
-    if($("#lesson_id").length) {
-        $("#lesson_id").val($("input[name=parent_id]").val());
+    if($("#topic_id").length) {
+        $("#topic_id").val($("input[name=parent_id]").val());
     }
     $.post(form_summary_url, $(this).serialize(), function (data) {
-        $("#msg").html('<p class="text-green">Record Inserted Successfully</p>');
+        $("#msg").html('<p class="text-green">Record Saved Successfully</p>');
         $("#addBtn").attr("disabled", false);
       //  $('#addUpdateForm')[0].reset();
         $('#addUpdateModal').modal('hide');
@@ -51,6 +51,30 @@ $(document).on("submit", "#addUpdateForm", function (event) {
     });
 });
 
+$("#mock-quiz-summary").click(function () {
+    // alert($("input[name=parent_id]").val());
+    $("#addUpdateMockModal").load("mock-summary");
+    $("#addUpdateMockModal").modal("show");
+});
+
+$(document).on("submit", "#addUpdateMockForm", function (event) {
+    event.preventDefault();
+    $("#addBtn").attr("disabled", true);
+
+    $.post(form_summary_url, $(this).serialize(), function (data) {
+        $("#msg").html('<p class="text-green">Record Saved Successfully</p>');
+        $("#addBtn").attr("disabled", false);
+        //  $('#addUpdateForm')[0].reset();
+        $('#addUpdateMockModal').modal('hide');
+        reload = 1;
+    }).fail(function (err) {
+        $("#addBtn").attr("disabled", false);
+        var response = err.responseJSON;
+        $.each(response.errors, function (key, value) {
+            return $("#msg").html('<p class="text-danger">' + value[0] + '</p>');
+        });
+    });
+});
 
 function addOption() {
     var opt = $("#opt_count").val();

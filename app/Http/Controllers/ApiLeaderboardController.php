@@ -19,7 +19,8 @@
 		        //This method will be execute before run the main process
                 $data = [];
                 $app_user_model = new AppUser();
-                $response = $app_user_model->where('is_active',1)
+                $response = $app_user_model->select('id','first_name','last_name','photo','avg_mock_score','badge')
+                    ->where('is_active',1)
                     ->where('avg_mock_score','>',0)
                     ->whereNull('deleted_at')
                     ->orderBy('avg_mock_score','DESC')

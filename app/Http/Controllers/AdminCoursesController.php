@@ -41,18 +41,19 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title'];
+			$this->form[] = ['label'=>'Sort Order','name'=>'sort_order','type'=>'text','validation'=>'required|integer','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Audio Allowed?','name'=>'audio_allowed','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-            $this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-            # END FORM DO NOT REMOVE THIS LINE
+			$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form = [];
 			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title'];
-			//$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Sort Order','name'=>'sort_order','type'=>'text','validation'=>'required|integer','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
 			//$this->form[] = ['label'=>'Audio Allowed?','name'=>'audio_allowed','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9'];
 			# OLD END FORM
 
 			/* 

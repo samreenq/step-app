@@ -42,15 +42,17 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Topic','name'=>'topic_id','type'=>'select2','validation'=>'required','width'=>'col-sm-9','datatable'=>'topics,title'];
-            $this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
-            $this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
-            $this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
-            $this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
-            $this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-            $this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];# END FORM DO NOT REMOVE THIS LINE
+			$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
+			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
+			$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-9'];
+			$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			$this->form[] = ['label'=>'Audio File','name'=>'audio_file','type'=>'upload','validation'=>'mimes:mpga,wav,mp3','width'=>'col-sm-9'];
+			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
+			//$this->form[] = ['label'=>'Topic','name'=>'topic_id','type'=>'select2','validation'=>'required','width'=>'col-sm-9','datatable'=>'topics,title'];
 			//$this->form[] = ['label'=>'Course','name'=>'course_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-9','datatable'=>'courses,title'];
 			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Lesson Title'];
 			//$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|min:1|max:255','width'=>'col-sm-9'];

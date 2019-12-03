@@ -115,6 +115,7 @@
 	        */
 	        $this->index_button = array();
 			$this->index_button[] = ['label' => 'Add Question', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
+            $this->index_button[] = ['label' => 'Mock Quiz Summary', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
 
 
 
@@ -148,8 +149,7 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-            $this->script_js = 'var form_url = "'.url("/admin/mock-quiz-store").'"; var reload=0;';
-
+            $this->script_js = 'var form_url = "'.url("/admin/mock-quiz-store").'";  var reload=0; var form_summary_url ="'.url("/admin/mock-summary-store").'";';
 
             /*
 	        | ---------------------------------------------------------------------- 
@@ -171,7 +171,7 @@
 	        | $this->post_index_html = "<p>test</p>";
 	        |
 	        */
-			$this->post_index_html = '<div class="modal fade" id="addModal"></div>';
+			$this->post_index_html = '<div class="modal fade" id="addModal"></div><div class="modal fade" id="addUpdateMockModal"></div>';
 	        
 	        
 	        

@@ -11,7 +11,7 @@ class MockSummary extends Model
 
     protected $table = 'mock_summary';
 
-    protected $fillable = [ 'title','description','is_active'];
+    protected $fillable = [ 'title','description','is_active','duration_seconds'];
 
 
 }
