@@ -19,18 +19,22 @@
 		        //This method will be execute before run the main process
                 $data = [];
                 $model = new VocabularyWords();
+                $user_id = $postdata['user_id'];
                 $response = $model->select($this->table.'.*',DB::raw('IFNULL(read_words.is_read, 0) as is_read'))
-                    ->leftJoin('read_words','read_words.word_id','=',$this->table.'.id')
+                   // ->leftJoin('read_words','read_words.word_id','=',$this->table.'.id')
+                    ->leftJoin('read_words', function($join) use ($user_id) {
+                        $join->on('read_words.word_id','=',$this->table.'.id')
+                        ->where('read_words.user_id','=', $user_id);
+                    })
                     ->where($this->table.'.is_active',1)
                     ->whereNull($this->table.'.deleted_at')
                     ->orderBy($this->table.'.id')
                     ->paginate(10);
 
                 if($response){
-                    // echo '<pre>'; print_r($response->toArray()); exit;
                     $data = makeClientHappyWithPagination($response);
                 }
-                // echo '<pre>'; print_r($data); exit;
+               // echo '<pre>'; print_r($data); exit;
                 $this->output($data);
 		    }
 
