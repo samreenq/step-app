@@ -22,11 +22,12 @@
                 $already_read = $this->model->where('user_id',$postdata['user_id'])
                     ->where('word_id',$postdata['word_id']);
 
+
                 if($already_read->count() > 0){
                     $row = $already_read->first();
-
+                   // echo '<pre>'; print_r($row['id']); exit;
                     $vocabulary_model = new VocabularyWords();
-                    $data = $vocabulary_model->getUserVocabulary($row['id'],$postdata['user_id']);
+                    $data = $vocabulary_model->getUserVocabulary($postdata['word_id'],$postdata['user_id']);
 
                     $this->output(makeClientHappy($data));
                 }
@@ -36,8 +37,7 @@
 		    }
 
 		    public function hook_query(&$query) {
-		        //This method is to customize the sql query$vocabulary_model = new VocabularyWords();
-                //                    $data = $vocabulary_model->getUserVocabulary($result['id'],$postdata['user_id']);
+		        //This method is to customize the sql query
 
 		    }
 
@@ -46,7 +46,7 @@
                 if($result['api_status'] == 1){
 
                     $vocabulary_model = new VocabularyWords();
-                    $data = $vocabulary_model->getUserVocabulary($result['id'],$postdata['user_id']);
+                    $data = $vocabulary_model->getUserVocabulary($postdata['word_id'],$postdata['user_id']);
                     $this->output(makeClientHappy($data));
                 }
 
