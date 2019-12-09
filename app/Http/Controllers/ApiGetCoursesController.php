@@ -2,7 +2,9 @@
 
 		use App\Course;
         use App\QuizResult;
+        use App\ReadWords;
         use App\Review;
+        use App\VocabularyWords;
         use Session;
 		use Request;
 		use DB;
@@ -34,14 +36,27 @@
                     $courses = new Course();
                     $data = $courses->orderBy('sort_order')->get();
 
+                    $vocabulary_model = new VocabularyWords();
+                    $total_words = $vocabulary_model->where('is_active',1)->whereNull('deleted_at')->count();
+
+                    $read_words = new ReadWords();
+                    $completed_words =  $read_words->where('user_id',$postdata['user_id'])->where('is_read',1)->whereNull('deleted_at')->count();
+
+
                     if(count($data) > 0){
 
                         $records = $data->toArray();
                         $quiz_result_model = new QuizResult();
+                        
 
                         foreach($records as $key => $row){
                             $records[$key]['completed_topic'] = $quiz_result_model->getTotalPassingTopic($row['id'],$postdata['user_id']);
                             unset($records[$key]['icon']);
+
+                            if($row['type'] == 'vocabulary'){
+                                $records[$key]['total_topic'] = $total_words;
+                                $records[$key]['completed_topic'] = $completed_words;
+                            }
                         }
                         $result['data'] = $records;
                     }
