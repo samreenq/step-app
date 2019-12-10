@@ -18,6 +18,7 @@ class VocabularyWords extends Model
     public function getUserVocabulary($word_id,$user_id)
     {
         return $this->select($this->table.'.*',DB::raw('IFNULL(read_words.is_read, 0) as is_read'))
+            ->with('arabic')
             //->leftJoin('read_words','read_words.word_id','=',$this->table.'.id')
             ->leftJoin('read_words', function($join) use ($user_id) {
                 $join->on('read_words.word_id','=',$this->table.'.id')
@@ -29,6 +30,11 @@ class VocabularyWords extends Model
             ->first();
 
 
+    }
+
+    public function arabic()
+    {
+        return $this->hasOne('App\VocabularyWordsLang','word_id','id');
     }
 
 

@@ -21,6 +21,7 @@
                 $model = new VocabularyWords();
                 $user_id = $postdata['user_id'];
                 $response = $model->select($this->table.'.*',DB::raw('IFNULL(read_words.is_read, 0) as is_read'))
+                    ->with('arabic')
                    // ->leftJoin('read_words','read_words.word_id','=',$this->table.'.id')
                     ->leftJoin('read_words', function($join) use ($user_id) {
                         $join->on('read_words.word_id','=',$this->table.'.id')
