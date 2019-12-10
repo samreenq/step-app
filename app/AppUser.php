@@ -40,10 +40,11 @@ class AppUser extends Model
 
     public function getPhotoPathAttribute()
     {
-        if(!empty($this->image_url))
-            return $this->image_url;
-        else if(!empty($this->photo))
+
+         if(!empty($this->photo))
             return Storage::url($this->photo);
+         else if(!empty($this->image_url))
+            return $this->image_url;
         else
             return '';
     }
