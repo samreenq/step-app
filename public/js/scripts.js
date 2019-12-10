@@ -76,6 +76,67 @@ $(document).on("submit", "#addUpdateMockForm", function (event) {
     });
 });
 
+
+$(document).ready(function(){
+
+    if($('#first_word').length > 0){
+        var buttons = '<span id="langWrap" style="float:right;">' +
+            '<a href="javascript:void(0);" id="lng-en" data-id="en" class="btn btn-primary langBtn">English</a>' +
+            '<a href="javascript:void(0);" id="lng-ar" data-id="ar" class="btn btn-default langBtn">Arabic</a></span>';
+
+
+        $('.panel-heading').prepend(buttons);
+      //  $('form').prepend('<input type="hidden" name="lang" id="lang" value="en" />');
+
+
+        $('.langBtn').on('click',function(){
+            $('input[name="lang"]').val( $(this).data('id'));
+
+            if($('.langBtn').hasClass('btn-primary')){
+
+                $('.langBtn').removeClass('btn-primary');
+                $('.langBtn').addClass('btn-default');
+            }
+
+            $(this).removeClass('btn-default');
+            $(this).addClass('btn-primary');
+
+            $.ajax
+            ({
+                url: lang_url,
+                type: 'GET',
+                data: {
+                    lang: $(this).data('id'),
+                   // word_id:1,
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    $('input[type="text"]').val("");
+                    $('textarea').text("");
+
+                    if (data['error'] == 1) {
+
+                    } else {
+
+                        var raw = data.data;
+                        $('#first_word').val(raw.first_word);
+                        $('#second_word').val(raw.second_word);
+                        $('#full_word').val(raw.full_word);
+                        $('#sentence').text(raw.sentence);
+
+                    }
+
+                }
+            });
+
+        });
+    }
+
+
+});
+
+
 function addOption() {
     var opt = $("#opt_count").val();
     var optInc = parseInt(opt) + 1;

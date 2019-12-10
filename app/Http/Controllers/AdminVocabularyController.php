@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 	use App\Course;
+    use App\VocabularyWordsLang;
+    use Illuminate\Support\Facades\Redirect;
     use Session;
 	use Request;
 	use DB;
@@ -44,6 +46,7 @@
 			$this->form[] = ['label'=>'Full Word','name'=>'full_word','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Sentence','name'=>'sentence','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
+			$this->form[] = ['name'=>'lang','type'=>'hidden', 'value'=>'en'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
@@ -82,6 +85,7 @@
 	        | 
 	        */
 	        $this->addaction = array();
+
 
 
 	        /* 
@@ -152,7 +156,8 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+
+	        $this->script_js =  'var lang_url ="'.url("/admin/get-vocabulary").'";';
 
 
             /*
@@ -188,7 +193,7 @@
 	        |
 	        */
 	        $this->load_js = array();
-	        
+            $this->load_js[] = asset("js/scripts.js");
 	        
 	        
 	        /*
@@ -264,6 +269,7 @@
 	        //Your code here
             $course = Course::where('type','vocabulary')->first();
             $postdata['course_id'] = $course->id;
+
 	    }
 
 	    /* 
@@ -287,7 +293,25 @@
 	    */
 	    public function hook_before_edit(&$postdata,$id) {        
 	        //Your code here
+           // echo '<pre>'; print_r($postdata); exit;
+            if($postdata['lang'] == 'ar'){
+                $postdata['word_id'] = $id;
+                $vocabulary_lang = new VocabularyWordsLang();
 
+                $lang_exist = $vocabulary_lang->where('word_id',$id)->where('lang','ar')->count();
+
+                if($lang_exist > 0){
+                    $vocabulary_lang->where('word_id',$id)->where('lang','ar')->update($postdata);
+                    return CRUDBooster::redirect(CRUDBooster::adminPath().'/vocabulary',"The data has been updated !");
+                }else{
+                    $vocabulary_lang->create($postdata);
+                    return CRUDBooster::redirect(CRUDBooster::adminPath().'/vocabulary',"The data has been updated !");
+                }
+
+            }
+            else{
+                unset($postdata['lang']);
+            }
 	    }
 
 	    /* 

@@ -35,3 +35,5 @@ Route::any('/activate/token/{token}', 'WebController@activateAccount');
 
 Route::post('/admin/mock-summary-store', 'MockSummaryController@store')->name('mock.summary-store');
 Route::any('/admin/mock-summary', 'MockSummaryController@getData');
+
+Route::any('/admin/get-vocabulary', 'VocabularyController@getByIdentifier');
