@@ -60,6 +60,7 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 	public function hook_before_edit(&$postdata,$id) { 
 		unset($postdata['password_confirmation']);
 	}
+
 	public function hook_before_add(&$postdata) {      
 	    unset($postdata['password_confirmation']);
 	}
@@ -75,6 +76,9 @@ class AdminCmsUsersController extends \crocodicstudio\crudbooster\controllers\CB
 	public function hook_query_index(&$query) {
 		//Your code here
 		if(!CRUDBooster::isSuperadmin())
-			$query->where('cms_users.id','>','1');
-	}
+			//$query->where('cms_users.id','>','1');
+            $query->whereNotIn('cms_users.id',[1,2]);
+            $query->where('cms_users.id','<>',CRUDBooster::myId());
+
+	 }
 }
