@@ -115,6 +115,13 @@ $(document).on("submit", "#lessonQuizForm", function (event) {
 
 $(document).ready(function(){
 
+    $('#form-group-avg_score').addClass('hide');
+    $('#form-group-avg_mock_score').addClass('hide');
+    $('#form-group-badge').addClass('hide');
+    $('#platform_type').attr('readonly',true);
+    $('#email').attr('readonly',true);
+
+
     if($('#first_word').length > 0){
         var buttons = '<span id="langWrap" style="float:right;">' +
             '<a href="javascript:void(0);" id="lng-en" data-id="en" class="btn btn-primary langBtn">English</a>' +
