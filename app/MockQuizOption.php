@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MockQuizOption extends Model
 {
 
-    protected $fillable = ['quiz_id', 'answer', 'is_correct'];
+    protected $fillable = ['mock_quiz_id', 'answer', 'is_correct','is_active'];
 
     public function storeOption($storeOption, $question_id)
     {
@@ -19,7 +19,8 @@ class MockQuizOption extends Model
                 $this->create(
                     ['mock_quiz_id' => $question_id,
                         'answer' => $option,
-                        'is_correct' => $is_correct]
+                        'is_correct' => $is_correct,
+                        'is_active' => 1]
                 );
             }
         }
