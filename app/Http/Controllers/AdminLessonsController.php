@@ -77,19 +77,27 @@
 			$this->sub_module[] = ['label'=>'Reviews','path'=>'reviews','parent_columns'=>'title','foreign_key'=>'review_by',
 				'button_color'=>'info','button_icon'=>'fa fa-star'];
 
+         //   $this->index_button[] = ['label' => 'Add Lesson Quiz', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
 
-	        /* 
-	        | ---------------------------------------------------------------------- 
-	        | Add More Action Button / Menu
-	        | ----------------------------------------------------------------------     
-	        | @label       = Label of action 
-	        | @url         = Target URL, you can use field alias. e.g : [id], [name], [title], etc
-	        | @icon        = Font awesome class icon. e.g : fa fa-bars
-	        | @color 	   = Default is primary. (primary, warning, succecss, info)     
-	        | @showIf 	   = If condition when action show. Use field alias. e.g : [id] == 1
-	        | 
-	        */
-	        $this->addaction = array();
+
+
+            /*
+            | ----------------------------------------------------------------------
+            | Add More Action Button / Menu
+            | ----------------------------------------------------------------------
+            | @label       = Label of action
+            | @url         = Target URL, you can use field alias. e.g : [id], [name], [title], etc
+            | @icon        = Font awesome class icon. e.g : fa fa-bars
+            | @color 	   = Default is primary. (primary, warning, succecss, info)
+            | @showIf 	   = If condition when action show. Use field alias. e.g : [id] == 1
+            |
+            */
+	       // $this->addaction = array();
+            $this->addaction[] = ['label'=>'Lesson Quiz',
+                'url'=>'javascript:void(0);',
+                'icon'=>'fa fa-check','color'=>'success lesson-quiz',
+               ];
+	      //  $this->addaction = ['label'=>'Add Lesson Quiz','icon'=>'fa fa-list'];
 
 
 	        /* 
@@ -127,7 +135,7 @@
 	        | 
 	        */
 	        $this->index_button = array();
-
+           // $this->index_button[] = ['label' => 'Add Lesson Quiz', 'color' => 'success', 'url' => "javascript:;", "icon" => "fa fa-plus-circle"];
 
 
 	        /* 
@@ -160,7 +168,7 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+	        $this->script_js = 'var form_url = "'.url("/admin/lesson-quiz-store").'";';
 
 
             /*
@@ -171,7 +179,7 @@
 	        | $this->pre_index_html = "<p>test</p>";
 	        |
 	        */
-	        $this->pre_index_html = null;
+	        $this->pre_index_html = '<div class="modal fade" id="lessonQuizModal"></div>';
 	        
 	        
 	        
@@ -195,7 +203,7 @@
 	        | $this->load_js[] = asset("myfile.js");
 	        |
 	        */
-	        $this->load_js = array();
+            $this->load_js[] = asset("js/scripts.js");
 	        
 	        
 	        
@@ -270,9 +278,7 @@
 	    */
 	    public function hook_before_add(&$postdata) {
 	        $postdata['created_by'] = CRUDBooster::myId();
-
 	        //Your code here
-
 	    }
 
 	    /* 

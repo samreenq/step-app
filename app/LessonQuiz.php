@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LessonQuiz extends Model
 {
-    use SoftDeletes;
+   // use SoftDeletes;
 
     protected $table = 'lesson_quiz';
+    protected $fillable = ['lesson_id','question', 'is_active' ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
