@@ -27,7 +27,7 @@ class StoreQuestion extends FormRequest
             'correct' => 'required|numeric',
             'option[]' => 'array|between:2,5',
             'question' => 'required|unique:quizzes,question,NULL,id,deleted_at,NULL,topic_id,'.$this->topic_id.'|max:255',
-            'lesson_id' => 'required|exists:lessons,id'
+            'topic_id' => 'required|exists:topics,id'
         ];
     }
 

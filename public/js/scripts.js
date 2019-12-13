@@ -1,5 +1,5 @@
 $("#add-question").click(function () {
-    $("#addModal").load("quiz-add");
+    $("#addModal").load("quiz-add",{topic_id:$("input[name=parent_id]").val()});
     $("#addModal").modal("show");
 });
 
@@ -20,6 +20,7 @@ $(document).on("submit", "#addForm", function (event) {
         $("#msg").html('<p class="text-green">Record Inserted Successfully</p>');
         $("#addBtn").attr("disabled", false);
         $('#addForm')[0].reset();
+        $('#addModal').modal('hide');
         reload = 1;
     }).fail(function (err) {
         $("#addBtn").attr("disabled", false);
@@ -66,6 +67,41 @@ $(document).on("submit", "#addUpdateMockForm", function (event) {
         $("#addBtn").attr("disabled", false);
         //  $('#addUpdateForm')[0].reset();
         $('#addUpdateMockModal').modal('hide');
+        reload = 1;
+    }).fail(function (err) {
+        $("#addBtn").attr("disabled", false);
+        var response = err.responseJSON;
+        $.each(response.errors, function (key, value) {
+            return $("#msg").html('<p class="text-danger">' + value[0] + '</p>');
+        });
+    });
+});
+
+
+$(".lesson-quiz").on('click',function () {
+
+   var lesson_id = $(this).parents('tr').find('.checkbox').val();
+    // alert($("input[name=parent_id]").val());
+    $("#lessonQuizModal").load("lesson-quiz",{lesson_id:lesson_id});
+    $("#lessonQuizModal").modal("show");
+});
+
+$(document).on("submit", "#lessonQuizForm", function (event) {
+
+    if($('input[type="radio"]:checked').length == 0){
+        $("#msg").html('<p class="text-danger">Please select the correct option</p>');
+        return false;
+    }
+
+
+    event.preventDefault();
+    $("#addBtn").attr("disabled", true);
+
+    $.post(form_url, $(this).serialize(), function (data) {
+        $("#msg").html('<p class="text-green">Record Saved Successfully</p>');
+        $("#addBtn").attr("disabled", false);
+        //  $('#addUpdateForm')[0].reset();
+        $('#lessonQuizModal').modal('hide');
         reload = 1;
     }).fail(function (err) {
         $("#addBtn").attr("disabled", false);
@@ -133,19 +169,53 @@ $(document).ready(function(){
         });
     }
 
+    $(document).on("click", ".radioBtn", function (e) {
+        $('input:radio').prop('checked', false);
+
+        if (!$(this).find('input:radio').prop('checked')) {
+
+            $(this).find('input:radio').prop('checked', true);
+        } else {
+            $(this).find('input:radio').prop('checked', false);
+        }
+    });
+
 
 });
 
 
-function addOption() {
+function addOption(id) {
     var opt = $("#opt_count").val();
     var optInc = parseInt(opt) + 1;
     if(opt < 5){
-        $("#addModalBody").append('<div class="row" id="option-' + optInc + '"><div class="col-sm-10"><label>Option ' + optInc +
+        $("#"+id).append('<div class="row" id="option-' + optInc + '"><div class="col-sm-10"><label>Option ' + optInc +
             '</label><input type="text" name="option[]" class="form-control" required /><input type="radio" name="correct" value="' + opt +
             '" id="correct' + opt + '"/><label for="correct' + opt + '">Correct Answer</label></div></div>');
         $("#opt_count").val(optInc);
     }
+}
+
+function addOptions(id) {
+    var opt = $("#last_option").val();
+    var optInc = parseInt(opt) + 1;
+    var labelOption = parseInt(optInc) + 1;
+    if(opt < 4){
+        $("#"+id).append('<div class="row" id="option-' + optInc + '"><div class="col-sm-10 radioBtn"><label>Option ' + labelOption +
+            '</label><input type="text" name="option['+optInc+']" class="form-control" required />' +
+            '<input type="radio" name="correct['+optInc+']" value="' + opt +
+            '" id="correct' + opt + '"/><label for="correct' + opt + '">Correct Answer</label></div></div>');
+        $("#opt_count").val(optInc);
+        $("#last_option").val(optInc);
+    }
+}
+
+function remOptions() {
+    var opt = $("#last_option").val();
+    if(opt > 1){
+        $("#option-"+opt).remove();
+        $("#last_option").val(opt-1);
+    }
+
 }
 
 function remOption() {
@@ -157,8 +227,13 @@ function remOption() {
 
 }
 
-$("#addModal").on('hidden.bs.modal', function () {
+$(".quizModal").on('hidden.bs.modal', function () {
     if(reload) {
         location.reload();
     }
-})
+});
+
+function lesson_quiz(id)
+{
+    alert(id);
+}
