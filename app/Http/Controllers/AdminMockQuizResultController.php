@@ -5,12 +5,12 @@
 	use DB;
 	use CRUDBooster;
 
-	class AdminAppUsersController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminMockQuizResultController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "first_name";
+			$this->title_field = "id";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
@@ -18,54 +18,48 @@
 			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = false;
-			$this->button_edit = true;
+			$this->button_edit = false;
 			$this->button_delete = false;
 			$this->button_detail = true;
 			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "app_users";
+			$this->table = "mock_quiz_result";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"First Name","name"=>"first_name"];
-			$this->col[] = ["label"=>"Last Name","name"=>"last_name"];
-			$this->col[] = ["label"=>"Email","name"=>"email"];
-			$this->col[] = ["label"=>"Photo","name"=>"photo","image"=>true];
-			$this->col[] = ["label"=>"Mock Quiz Score","name"=>"avg_mock_score"];
-			$this->col[] = ["label"=>"Badge","name"=>"badge"];
+			//$this->col[] = ["label"=>"App User","name"=>"user_id","join"=>"app_users,first_name"];
+            $this->col[] = ["label"=>"App User","name"=>"(select CONCAT( app_users.first_name ,' ',app_users.last_name ) from app_users where mock_quiz_result.user_id = app_users.id) as user_id"];
+            $this->col[] = ["label"=>"Total Questions","name"=>"total_questions"];
+			$this->col[] = ["label"=>"Attempted","name"=>"attempted"];
+			$this->col[] = ["label"=>"Correct","name"=>"correct"];
+			$this->col[] = ["label"=>"Wrong","name"=>"wrong"];
+			$this->col[] = ["label"=>"Score","name"=>"score"];
+			$this->col[] = ["label"=>"Status","name"=>"status"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'First Name','name'=>'first_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Last Name','name'=>'last_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:app_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
-			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:3000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Platform Type','name'=>'platform_type','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Is Notify','name'=>'is_notify','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			$this->form[] = ['label'=>'Is Paid','name'=>'is_paid','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			$this->form[] = ['label'=>'Topic Quiz Score','name'=>'avg_score','type'=>'text','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Mock Quiz Score','name'=>'avg_mock_score','type'=>'text','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Badge','name'=>'badge','type'=>'text','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Total Questions','name'=>'total_questions','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Attempted','name'=>'attempted','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Correct','name'=>'correct','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Wrong','name'=>'wrong','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Score','name'=>'score','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'App User','name'=>'user_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'app_users,first_name'];
+			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'First Name','name'=>'first_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Last Name','name'=>'last_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:app_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
-			//$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:3000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Platform Type','name'=>'platform_type','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Is Notify','name'=>'is_notify','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Is Paid','name'=>'is_paid','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Avg Score','name'=>'avg_score','type'=>'text','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Avg Mock Score','name'=>'avg_mock_score','type'=>'text','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Badge','name'=>'badge','type'=>'text','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Total Questions','name'=>'total_questions','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Attempted','name'=>'attempted','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Correct','name'=>'correct','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Wrong','name'=>'wrong','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Score','name'=>'score','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'User Id','name'=>'user_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'user,id'];
+			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 
@@ -200,7 +194,7 @@
 	        | $this->load_js[] = asset("myfile.js");
 	        |
 	        */
-            $this->load_js[] = asset("js/scripts.js");
+	        $this->load_js = array();
 	        
 	        
 	        
@@ -253,7 +247,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-
+	            
 	    }
 
 	    /*
