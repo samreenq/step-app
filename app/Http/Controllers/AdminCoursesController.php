@@ -17,14 +17,14 @@
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
-			$this->button_add = true;
+			$this->button_add = false;
 			$this->button_edit = true;
-			$this->button_delete = true;
+			$this->button_delete = false;
 			$this->button_detail = false;
 			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = true;
+			$this->button_export = false;
 			$this->table = "courses";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
@@ -40,7 +40,7 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title'];
+			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70|alpha_custom','width'=>'col-sm-9','placeholder'=>'Please Enter Title'];
 			$this->form[] = ['label'=>'Sort Order','name'=>'sort_order','type'=>'text','validation'=>'required|integer','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9'];
 			$this->form[] = ['label'=>'Audio Allowed?','name'=>'audio_allowed','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
@@ -51,9 +51,9 @@
 			//$this->form = [];
 			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-9','placeholder'=>'Please Enter Title'];
 			//$this->form[] = ['label'=>'Sort Order','name'=>'sort_order','type'=>'text','validation'=>'required|integer','width'=>'col-sm-9'];
-			//$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
+			//$this->form[] = ['label'=>'Icon','name'=>'icon','type'=>'upload','validation'=>'required','width'=>'col-sm-9'];
 			//$this->form[] = ['label'=>'Audio Allowed?','name'=>'audio_allowed','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9'];
+			//$this->form[] = ['label'=>'Is Active?','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-9','dataenum'=>'1|Yes;0|No'];
 			# OLD END FORM
 
 			/* 

@@ -40,8 +40,8 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'First Name','name'=>'first_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Last Name','name'=>'last_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'First Name','name'=>'first_name','type'=>'text','validation'=>'required|min:1|max:50|alpha_custom','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Last Name','name'=>'last_name','type'=>'text','validation'=>'required|min:1|max:50|alpha_custom','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:app_users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
 			$this->form[] = ['label'=>'Photo','name'=>'photo','type'=>'upload','validation'=>'image|max:3000','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Platform Type','name'=>'platform_type','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
@@ -63,8 +63,8 @@
 			//$this->form[] = ['label'=>'Is Notify','name'=>'is_notify','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
 			//$this->form[] = ['label'=>'Is Paid','name'=>'is_paid','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
 			//$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
-			//$this->form[] = ['label'=>'Avg Score','name'=>'avg_score','type'=>'text','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Avg Mock Score','name'=>'avg_mock_score','type'=>'text','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Topic Quiz Score','name'=>'avg_score','type'=>'text','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Mock Quiz Score','name'=>'avg_mock_score','type'=>'text','width'=>'col-sm-10'];
 			//$this->form[] = ['label'=>'Badge','name'=>'badge','type'=>'text','width'=>'col-sm-10'];
 			# OLD END FORM
 

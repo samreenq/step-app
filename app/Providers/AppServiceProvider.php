@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use Validator;
+use App\Http\Validator\CustomValidator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        // Register your custom validation rule.
+        Validator::resolver(function ($translator, $data, $rules, $messages) {
+            return new CustomValidator($translator, $data, $rules, $messages);
+        });
     }
 }
