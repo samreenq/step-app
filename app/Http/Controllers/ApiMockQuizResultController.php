@@ -123,7 +123,7 @@
 
                     $badge = '';
                     if($max_quiz_result['score'] >= $crown_badge_score){
-                        $badge = 'crown';
+                        $badge = 'bronze';
                     }
                     elseif($max_quiz_result['score'] >= $gold_badge_score && $max_quiz_result['score'] < $crown_badge_score){
                         $badge = 'gold';
