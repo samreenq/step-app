@@ -26,7 +26,7 @@ class LessonQuizRequest extends FormRequest
         return [
           //  'correct[]' => "required|array",
            // 'option[]' => "required|array|min:2",
-            'question' => 'required|unique:lesson_quiz,question,NULL,id,deleted_at,'.$this->lesson_id.',lesson_id|max:255',
+            'question' => 'required|unique:lesson_quiz,question,'.$this->lesson_id.',lesson_id,deleted_at,NULL|max:255',
             'lesson_id' => 'required|exists:lessons,id'
         ];
     }

@@ -24,9 +24,9 @@ class QuizSummaryRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
             'topic_id' => 'required|exists:topics,id',
+            'title' => 'required|unique:quiz_summary,title,'.$this->topic_id.',topic_id,deleted_at,NULL',
+            'description' => 'required',
             'duration_seconds' => 'required|integer'
         ];
     }

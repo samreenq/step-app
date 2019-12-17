@@ -41,8 +41,8 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'First Word','name'=>'first_word','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Second Word','name'=>'second_word','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'First Word','name'=>'first_word','type'=>'text','validation'=>'required|min:1|max:255|unique:'.$this->table.',first_word,'.$row->id,'width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Second Word','name'=>'second_word','type'=>'text','validation'=>'required|min:1|max:255|unique:'.$this->table.',second_word,'.$row->id,'width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Full Word','name'=>'full_word','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Sentence','name'=>'sentence','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Is Active','name'=>'is_active','type'=>'radio','validation'=>'required|integer','width'=>'col-sm-10','dataenum'=>'1|Yes;0|No'];
@@ -269,7 +269,7 @@
 	        //Your code here
             $course = Course::where('type','vocabulary')->first();
             $postdata['course_id'] = $course->id;
-
+            unset($postdata['lang']);
 	    }
 
 	    /* 

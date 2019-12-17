@@ -41,7 +41,7 @@ class AdminQuizzesController extends \crocodicstudio\crudbooster\controllers\CBC
 			# START FORM DO NOT REMOVE THIS LINE
         $this->form = [];
         $this->form[] = ['name' => 'topic_id', 'type' => 'hidden'];
-        $this->form[] = ['label' => 'Question', 'name' => 'question', 'type' => 'text', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-9'];
+        $this->form[] = ['label' => 'Question', 'name' => 'question', 'type' => 'text', 'validation' => 'required|min:1|max:255|unique:'.$this->table.',question,'.$row->id, 'width' => 'col-sm-9'];
         $this->form[] = ['label' => 'Is Active?', 'name' => 'is_active', 'type' => 'radio', 'validation' => 'required|integer', 'width' => 'col-sm-9', 'dataenum' => '1|Yes;0|No'];
         # END FORM DO NOT REMOVE THIS LINE
 
