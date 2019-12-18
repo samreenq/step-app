@@ -74,6 +74,8 @@ Class SpeechTextController extends Controller
                 $client->close();
     }
 
+    //Using local files and urls just for testing
+
     public function test()
     {
 
