@@ -39,7 +39,9 @@ Route::any('/admin/mock-summary', 'MockSummaryController@getData');
 
 Route::any('/admin/get-vocabulary', 'VocabularyController@getByIdentifier');
 
-Route::any('/translate','SpeechTextController@index');
-
 Route::any('/admin/lesson-quiz', 'LessonQuizController@getData');
 Route::any('/admin/lesson-quiz-store', 'LessonQuizController@store');
+
+//Speech Translation
+Route::any('/translate','SpeechTextController@index');
+Route::any('/translate/test','SpeechTextController@test');
